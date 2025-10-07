@@ -1,93 +1,68 @@
-# backend-python
 
+---
 
+## ⚡ Chi tiết các folder quan trọng
 
-## Getting started
+### 1. `agent/config/`
+Chứa các cấu hình kết nối và client:
+- `weaviate_config.py`: Khởi tạo client, URL, schema cho Weaviate.  
+- `embedding_config.py`: Khởi tạo model embedding, API key
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+### 2. `agent/agents/`
+Mỗi file tương ứng một **agent độc lập**:
+- **roadmap_agent**: Tạo roadmap học tập dựa trên kỹ năng hiện có & target role.  
+- **recommendation_agent**: Truy xuất và gợi ý job dựa trên CV hoặc skills.  
+- **cv_creation_agent**: Xử lý CV, normalize skills, tạo JSON chuẩn.
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+### 3. `agent/chains/`
+Chain liên kết **prompt, LLM, tool** thành pipeline logic:
+- Ví dụ: roadmap_chain gọi roadmap_agent → prompt → internal/external tools → output JSON.
 
-## Add your files
+### 4. `agent/tools/`
+- `internal/`: Tools gọi Weaviate, database, hoặc các chức năng nội bộ.  
+- `external/`: Tools gọi API bên ngoài (Wikipedia, TMDB, weather, v.v.).
+- Các tool nên được wrapper trong internal/external để agent chỉ cần gọi agent.run() mà không biết chi tiết implementation.
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/topics/git/add_files/#add-files-to-a-git-repository) or push an existing Git repository with the following command:
+### 5. `agent/prompts/`
+Chứa các prompt template để agent biết cách format input/output và tạo JSON chuẩn.
 
-```
-cd existing_repo
-git remote add origin http://git.fa.edu.vn/hcm25_fr_fu_js_java_01/careermate/sep490/be-python.git
-git branch -M main
-git push -uf origin main
-```
+### 6. `agent/utils/`
+Các hàm helper: logging, parse JSON, validate data, handle errors, v.v.
 
-## Integrate with your tools
+### 7. `agent/llm/`
+Wrapper cho các LLM:
+- Khởi tạo LLM, setting temperature, max token.
+- Mỗi agent có thể import cùng một LLM fine-tuned.
 
-- [ ] [Set up project integrations](http://git.fa.edu.vn/hcm25_fr_fu_js_java_01/careermate/sep490/be-python/-/settings/integrations)
+### 8. `agent/data/`
+- Chứa embeddings, dataset để fine-tune, hoặc ví dụ input/output JSON.  
+- Phục vụ agent cho training hoặc thử nghiệm local.
+- Data và embeddings không commit trực tiếp vào Git nếu có PII hoặc dataset lớn.
 
-## Collaborate with your team
+### 9. `mypermit/`
+- Client Permit.io để kiểm soát quyền hạn agent/user.  
+- Bảo vệ agent khỏi việc thao tác dữ liệu ngoài quyền.
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/user/project/merge_requests/auto_merge/)
+### 10. `apps/api/`
+- Django REST API: nhận request từ spring boot, gọi agent và trả kết quả.  
+- `views.py` + `urls.py` định tuyến endpoints.
 
-## Test and Deploy
+---
 
-Use the built-in continuous integration in GitLab.
+## ⚡ Hướng dẫn nhanh dev
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+1. **Cài đặt môi trường**
+```bash
+1. 
+uv venv --python 3.12 (đã có thì không cần chạy)
+source .venv/bin/activate
+uv pip install -r requirements.txt
 
-***
+2. Chạy Weaviate local
 
-# Editing this README
+docker compose up -d
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
+3. Chạy Django server
 
-## Suggestions for a good README
-
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+python manage.py migrate
+python manage.py runserver

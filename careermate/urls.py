@@ -1,8 +1,7 @@
 from django.urls import path, include
-from django.contrib import admin
-from apps.ai_career_path.views import RoadmapGenerateView
+
+from home.swagger import schema_view
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('api/roadmap/generate/', RoadmapGenerateView.as_view()),
+    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
 ]

@@ -7,15 +7,18 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
+    # 'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    # Add your app (Example: ai_career_path)
-    'apps.ai_career_path'
+    'drf_yasg',
+    # Add your app
+    'apps.roadmap_agent',
+    'apps.recommendation_agent',
+    'apps.cv_creation_agent',
 ]
 
 MIDDLEWARE = [
@@ -64,3 +67,14 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header'
+        }
+    },
+    'USE_SESSION_AUTH': False,
+}

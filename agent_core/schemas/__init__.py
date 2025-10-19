@@ -47,8 +47,17 @@ RESUME_EXTRACTION_SCHEMA = {
             }
         },
         "skills": {
-            "type": "array",
-            "items": {"type": "string"}
+            "type": "object",
+            "properties": {
+                "soft_skills": {
+                    "type": "array",
+                    "items": {"type": "string"}
+                },
+                "technical_skills": {
+                    "type": "array",
+                    "items": {"type": "string"}
+                }
+            }
         },
         "certificates": {
             "type": "array",

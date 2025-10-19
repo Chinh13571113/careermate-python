@@ -11,7 +11,10 @@ Required JSON structure:
   "education": [{"degree": "", "institution": ""}],
   "experience": [{"title": "", "company": ""}],
   "projects": [{"name": "",tech_stack": [tech1, tech2]}],
-  "skills": ["skill1", "skill2"],
+  "skills": {
+    "soft_skills": [skill1, skill2],
+    "technical_skills": [skill1, skill2]
+  },
   "certificates": ["cert1"],
   "languages": [{"name": "", "level": ""}]
 }

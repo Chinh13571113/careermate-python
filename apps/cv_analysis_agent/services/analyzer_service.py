@@ -3,9 +3,7 @@ import json
 import re
 from functools import lru_cache
 
-from traits.trait_types import false
-
-from agent_core.llm import get_model
+from agent_core.llm import get_openai_model
 from agent_core.prompts import extract_resume_prompts
 from apps.cv_analysis_agent.services.extract_text import extract_text
 
@@ -14,7 +12,7 @@ from apps.cv_analysis_agent.services.extract_text import extract_text
 @lru_cache(maxsize=2)
 def get_cached_model(temperature: float):
     """Cache model instances for reuse"""
-    return get_model(temperature=temperature)
+    return get_openai_model(temperature=temperature)
 
 
 def extract_json_from_response(response: str) -> str:

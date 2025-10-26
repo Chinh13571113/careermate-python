@@ -23,6 +23,7 @@ services:
       CLUSTER_HOSTNAME: 'node1'
     depends_on:
       - redis
+
   redis:
     image: redis:7.2-alpine
     container_name: redis
@@ -32,7 +33,22 @@ services:
     volumes:
       - redis_data:/data
     command: [ "redis-server", "--appendonly", "yes" ]
+
+  postgres:
+    image: postgres:15-alpine
+    container_name: postgres_careermate
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-careermate}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
 volumes:
   weaviate_data:
   redis_data:
-...
+  postgres_data:
+

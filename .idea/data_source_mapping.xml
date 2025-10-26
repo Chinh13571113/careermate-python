@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourcePerFileMappings">
+    <file url="file://$PROJECT_DIR$/apps/recommendation_agent/services/weaviate_service.py" value="2b3298d9-d8c5-4950-8f69-73824a6bd9ba" />
+  </component>
+</project>

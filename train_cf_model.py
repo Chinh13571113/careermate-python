@@ -9,7 +9,7 @@ import django
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Careermate.settings')
 django.setup()
 
-from apps.recommendation_agent.services.collaborative_filtering import cf_service
+from apps.recommendation_agent.services.weaviate_service import cf_service
 from apps.recommendation_agent.models import JobFeedback, Candidate, JobPostings
 
 def main():

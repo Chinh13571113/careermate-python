@@ -1,10 +1,31 @@
 from rest_framework import serializers
 
+from apps.recommendation_agent.models import Resume, Skill, Candidate
+
+
 class IndexJobSerializer(serializers.Serializer):
     job_id = serializers.IntegerField()
     title = serializers.CharField(allow_blank=True)
     skills = serializers.ListField(child=serializers.CharField(), allow_empty=True, required=False)
     description = serializers.CharField(allow_blank=True)
+
+class JobPostingSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    title = serializers.CharField()
+    description = serializers.CharField(allow_blank=True)
+    address = serializers.CharField(allow_blank=True)
+    status = serializers.CharField(allow_blank=True)
+    expiration_date = serializers.DateField(allow_null=True)
+    created_at = serializers.DateField(allow_null=True)
+    recruiter_id = serializers.IntegerField()
+    company_name = serializers.CharField(allow_blank=True)
+    skills = serializers.ListField(child=serializers.CharField(), allow_empty=True, required=False)
+
+class AccountSerializer(serializers.Serializer):
+    account_id = serializers.IntegerField()
+    email = serializers.EmailField()
+    full_name = serializers.CharField(allow_blank=True)
+    status = serializers.CharField(allow_blank=True)
 
 class RecommendSerializer(serializers.Serializer):
     cv_text = serializers.CharField(allow_blank=True, required=False)
@@ -29,3 +50,24 @@ class TrainCFModelSerializer(serializers.Serializer):
         default="BPR",
         help_text="Model type: 'BPR' (Bayesian Personalized Ranking - recommended for implicit feedback)"
     )
+class SkillSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Skill
+        fields = ['skillID', 'skill_type', 'skill_name', 'yearOfExperience']
+
+
+class ResumeSerializer(serializers.ModelSerializer):
+    # nested list skill
+    skills = SkillSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Resume
+        fields = ['resumeID', 'about_me', 'createAt', 'skills']
+
+
+class CandidateSerializer(serializers.Serializer):
+    candidate_id = serializers.IntegerField()
+    title = serializers.CharField(allow_blank=True, allow_null=True)
+    fullname = serializers.CharField(allow_blank=True, allow_null=True)
+    email = serializers.EmailField()
+    skills = serializers.ListField(child=serializers.DictField(), allow_empty=True)

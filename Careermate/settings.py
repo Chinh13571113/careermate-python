@@ -86,21 +86,14 @@ WSGI_APPLICATION = 'Careermate.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    },
-    'postgres': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.environ.get('POSTGRES_DB', 'MyPostgresDB'),
         'USER': os.environ.get('POSTGRES_USER', 'root'),
         'PASSWORD': os.environ.get('POSTGRES_PASSWORD', '123456'),
-        'HOST': os.environ.get('POSTGRES_HOST', 'localhost'),
-        'PORT': os.environ.get('POSTGRES_PORT', '5432'),
+        'HOST': os.environ.get('POSTGRES_HOST', 'postgres'),
+        'PORT': os.environ.get('POSTGRES_PORT', '5439'),
     },
 }
-
-# Database router for job data
-DATABASE_ROUTERS = ['Careermate.db_router.PostgresRouter']
 
 AUTH_PASSWORD_VALIDATORS = []
 

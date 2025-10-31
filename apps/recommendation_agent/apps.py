@@ -7,4 +7,3 @@ class RecommendationAgentConfig(AppConfig):
 
     def ready(self):
         """Import signals when Django starts"""
-        import apps.recommendation_agent.signals

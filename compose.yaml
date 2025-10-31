@@ -1,4 +1,3 @@
----
 services:
   weaviate:
     command:

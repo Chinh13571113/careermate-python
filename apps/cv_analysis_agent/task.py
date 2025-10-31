@@ -7,6 +7,7 @@ def process_resume_task(self, file_path: str, give_feedback: bool) -> dict:
     try:
         with open(file_path, "rb") as f:
             text = extract_text(f)
+            print("text extracted:", text)
         structured = analyze_resume_text(text,give_feedback)
         if give_feedback:
             result = "feedback"

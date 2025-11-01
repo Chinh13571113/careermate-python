@@ -1,5 +1,5 @@
 from django.db import models
-from .job_postings import JobPostings
+from .job_posting import JobPostings
 from .candidate import Candidate
 
 

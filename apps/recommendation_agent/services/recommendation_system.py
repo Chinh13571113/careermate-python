@@ -1,17 +1,25 @@
 import asyncio
 
+import joblib
 import numpy as np
 import pandas as pd
 import os
 import django
 import sys
+from sqlalchemy import create_engine
+from asgiref.sync import sync_to_async
 
 from dotenv import load_dotenv
 from google import genai
+from surprise import Reader, Dataset, SVD, accuracy
+from surprise.model_selection import train_test_split
+
 from apps.recommendation_agent.services.weaviate_service import query_weaviate_async, manager
 from apps.recommendation_agent.services.overlap_skill import calculate_skill_overlap
 
 load_dotenv()
+MODEL_PATH = "cf_model.pkl"
+
 # Setup Django environment FIRST before importing models
 django_base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 sys.path.append(django_base_dir)
@@ -20,7 +28,23 @@ django.setup()
 
 # NOW import Django models after setup
 from django.conf import settings
-from apps.recommendation_agent.models import Candidate
+from apps.recommendation_agent.models import Candidate, JobPostings
+
+# Create SQLAlchemy engine from Django database settings
+def get_sqlalchemy_engine():
+    """Create SQLAlchemy engine from Django database settings"""
+    db_settings = settings.DATABASES['default']
+    engine = db_settings.get('ENGINE', '')
+
+    if 'postgresql' in engine:
+        db_url = f"postgresql://{db_settings['USER']}:{db_settings['PASSWORD']}@{db_settings['HOST']}:{db_settings.get('PORT', 5432)}/{db_settings['NAME']}"
+    elif 'mysql' in engine:
+        db_url = f"mysql+pymysql://{db_settings['USER']}:{db_settings['PASSWORD']}@{db_settings['HOST']}:{db_settings.get('PORT', 3306)}/{db_settings['NAME']}"
+    else:
+        # SQLite or other
+        db_url = f"sqlite:///{db_settings['NAME']}"
+
+    return create_engine(db_url)
 
 # Get the correct path to the CSV file
 csv_path = os.path.join(settings.BASE_DIR, 'agent_core', 'data', 'job_postings.csv')
@@ -100,56 +124,6 @@ def get_gemini_embedding(text: str):
     return np.array(response.embeddings[0].values, dtype=np.float32).tolist()
 
 
-# model = SentenceTransformer("all-MiniLM-L6-v2")
-# manager = WeaviateClientManager()
-# client = manager.get_client()
-
-#content-based
-#async query to weaviate
-# def _query_weaviate_sync(vector, limit):
-#     """Synchronous function to query Weaviate using v4 API with default vector"""
-#     # Get the collection
-#     job_collection = client.collections.get("JobPosting")
-#
-#     # Query using v4 API with default vector (no target_vector needed)
-#     response = job_collection.query.near_vector(
-#         near_vector=vector,
-#         limit=limit,
-#         return_metadata=['distance'],
-#         include_vector=True
-#     )
-#
-#     items = []
-#     for obj in response.objects:
-#         skills_field = obj.properties.get("skills", [])
-#         # nếu skills là list, nối thành chuỗi
-#         if isinstance(skills_field, list):
-#             skills_text = ", ".join(str(s) for s in skills_field)
-#         else:
-#             skills_text = str(skills_field)
-#
-#         items.append({
-#             "job_id": obj.properties.get("jobId"),
-#             "title": obj.properties.get("title"),
-#             "skills": skills_text,
-#             "address": obj.properties.get("address"),
-#             "description": obj.properties.get("description"),
-#             "distance": obj.metadata.distance if obj.metadata else 0,
-#         })
-#     return items
-#
-# async def query_weaviate_async(vector: list, limit: int = 10):
-#     """Async wrapper to query Weaviate"""
-#     loop = asyncio.get_running_loop()
-#     return await loop.run_in_executor(None, _query_weaviate_sync, vector, limit)
-
-
-
-
-# fetch job posting from weaviate
- # compare title, skills, address
- #return top k job postings score similarity
-
 #Content-Based Recommendation with Skill Overlap Weighting
 async def get_content_based_recommendations(query_item, top_n=5, weights=None, skill_weight=0.4):
     if weights is None:
@@ -169,11 +143,11 @@ async def get_content_based_recommendations(query_item, top_n=5, weights=None, s
     # Combine with weights by repeating (simple but effective approach)
     combined_parts = []
     if skills_text:
-        combined_parts.extend([skills_text] * 10)  # High weight for skills
+        combined_parts.extend([skills_text] * int(weights.get("skills", 0.5) * 10))  # High weight for skills
     if title_text:
-        combined_parts.extend([title_text] * 3)  # Medium weight for title
+        combined_parts.extend([title_text] * int(weights.get("title", 0.3) * 10))  # Medium weight for title
     if description_text:
-        combined_parts.append(description_text)  # Low weight for description
+        combined_parts.extend([description_text] * int(weights.get("description", 0.15) * 10))
 
     combined_text = " ".join(combined_parts)
 
@@ -223,70 +197,183 @@ async def get_content_based_recommendations(query_item, top_n=5, weights=None, s
 
 
 #Collaborative Filtering Recommendation can be added here similarly
-async def get_collaborative_filtering_recommendations(candidate_id, top_n=5):
-    # Placeholder for collaborative filtering logic
-    # This would typically involve querying a trained CF model
-    # and returning recommendations based on candidate interactions
-    pass
+def _collaborative_filtering_sync(candidate_id, job_ids, n=5):
+    """Dự đoán top job cho candidate dựa vào model CF (SVD) với thông tin chi tiết"""
+    if not os.path.exists(MODEL_PATH):
+        print("⚠️ CF model not found, returning empty results.")
+        return []
+
+    model = joblib.load(MODEL_PATH)
+
+    # Predict scores for all jobs
+    predictions = [(job_id, model.predict(candidate_id, job_id).est) for job_id in job_ids]
+    predictions = sorted(predictions, key=lambda x: x[1], reverse=True)[:n]
+
+    # Get detailed job information from database
+    predicted_job_ids = [job_id for job_id, _ in predictions]
+    jobs = JobPostings.objects.filter(id__in=predicted_job_ids).values(
+        'id', 'title', 'description', 'address'
+    )
+
+    # Create a mapping of job_id to job details
+    job_details_map = {job['id']: job for job in jobs}
+
+    # Combine predictions with job details
+    detailed_results = []
+    for job_id, score in predictions:
+        job_info = job_details_map.get(job_id, {})
+
+        # Get skills from Weaviate or CSV (if available)
+        skills = "N/A"
+        try:
+            # Try to get from data_jp CSV
+            job_row = data_jp[data_jp['id'] == job_id]
+            if not job_row.empty:
+                skills = job_row.iloc[0].get('skills', 'N/A')
+        except Exception:
+            pass
+
+        detailed_results.append({
+            "job_id": job_id,
+            "title": job_info.get('title', 'Unknown'),
+            "description": job_info.get('description', ''),
+            "address": job_info.get('address', ''),
+            "skills": skills,
+            "cf_score": round(score, 4)
+        })
+
+    return detailed_results
+
+async def get_collaborative_filtering_recommendations(candidate_id, job_ids, model, n=5):
+    """Async wrapper for collaborative filtering"""
+    return await sync_to_async(_collaborative_filtering_sync)(candidate_id, job_ids, n)
 
 
 #Hybrid Recommendation can be added here similarly
 
+async def get_hybrid_job_recommendations(candidate_id: int, query_item: dict, job_ids: list, top_n: int = 5):
+    # 1️⃣ Get Content-Based recommendations (semantic + skill overlap)
+    content_results = await get_content_based_recommendations(query_item, top_n=top_n * 2)
+    content_scores = {r["job_id"]: r["similarity"] for r in content_results}
 
+    # 2️⃣ Try Collaborative Filtering (fallback to None if data too small)
+    try:
+        cf_results = await get_collaborative_filtering_recommendations(candidate_id, job_ids, model=None, n=top_n * 2)
+        # CF results now return detailed dictionaries with job info
+        cf_scores = {job["job_id"]: job["cf_score"] for job in cf_results}
+        has_cf_data = True
+    except Exception as e:
+        print(f"[⚠️ CF skipped: {e}]")
+        cf_results = []  # Initialize to empty list when exception occurs
+        cf_scores = {}
+        has_cf_data = False
 
+    # 3️⃣ Set dynamic weights
+    # New system → content weight high, CF low
+    if not has_cf_data:
+        content_weight = 1.0
+        cf_weight = 0.0
+    else:
+        content_weight = 0.8  # tune dynamically when more feedback grows
+        cf_weight = 0.2
 
+    # 4️⃣ Combine both scores
+    hybrid_combined = {}
+    for job_id, c_score in content_scores.items():
+        cf_score = cf_scores.get(job_id, 0)
+        hybrid_score = (content_weight * c_score) + (cf_weight * cf_score)
+        hybrid_combined[job_id] = round(hybrid_score, 4)
 
+    # 5️⃣ Merge metadata from content results
+    hybrid_ranked = sorted(content_results, key=lambda x: hybrid_combined.get(x["job_id"], 0), reverse=True)[:top_n]
 
+    # 6️⃣ Attach hybrid score to results
+    for r in hybrid_ranked:
+        r["final_score"] = hybrid_combined.get(r["job_id"], r["similarity"])
+        r["source_weight"] = {"content": content_weight, "cf": cf_weight}
 
-
-
-if __name__ == "__main__":
-    import json
-
-    print("🚀 Starting Content-Based Recommendation Test (with Skill Overlap Weighting)...")
-    print("=" * 80)
-
-    query_item = {
-        "skills": ["Python", "FastAPI", "PostgreSQL", "Docker", "AWS"],
-        "title": "Back-end developer",
-        "description": "We are looking for a skilled Back-end developer with experience in "
-                       "Python and FastAPI to join our dynamic team. The ideal"
-                       " candidate will have a strong background in building "
-                       "scalable web applications and working with cloud services like AWS. "
-                       "Familiarity with PostgreSQL and containerization using Docker is a must."
+    return  {
+        "content_based": content_results[:top_n],
+        "collaborative": cf_results[:top_n],  # Now returns detailed job info
+        "hybrid_top": hybrid_ranked
     }
 
-    print("\n📋 Query Item:")
-    print(json.dumps(query_item, indent=2, ensure_ascii=False))
-    print("\n" + "=" * 80)
 
-    try:
-        print("\n🔍 Searching for similar jobs (Hybrid: Semantic + Skill Overlap)...")
-        recs = asyncio.run(get_content_based_recommendations(query_item, top_n=5, skill_weight=0.4))
+def _query_all_jobs_sync():
+    """
+    Synchronous function to get ACTIVE jobs from PostgreSQL (ORM)
+    """
+    jobs = JobPostings.objects.filter(status="ACTIVE").values(
+        "id", "title", "description", "address"
+    )
 
-        if not recs:
-            print("\n❌ No recommendations found. The JobPosting collection might be empty.")
-        else:
-            print(f"\n✅ Found {len(recs)} recommendations:\n")
-            for idx, r in enumerate(recs, 1):
-                print(f"\n{'='*80}")
-                print(f"#{idx} - {r['title']}")
-                print(f"{'='*80}")
-                print(f"🆔 Job ID: {r['job_id']}")
-                print(f"🧠 Skills: {r['skills']}")
-                print(f"📊 Scores:")
-                print(f"   • Semantic Similarity: {r['semantic_similarity']:.3f}")
-                print(f"   • Similarity: {r['similarity']:.3f} (Overall)")
-                print(f"📝 Description: {r['description'][:150]}...")
+    # Chuẩn hóa về định dạng mà hybrid model dùng
+    job_list = [{"job_id": job["id"], "title": job["title"],
+                 "description": job["description"], "address": job["address"]}
+                for job in jobs]
+    return job_list
 
-    except Exception as e:
-        print(f"\n❌ Error occurred: {str(e)}")
-        import traceback
-        traceback.print_exc()
+def query_all_jobs():
+    """
+    Lấy danh sách job đang ACTIVE từ PostgreSQL (ORM)
+    Wrapper for sync context (still synchronous for backward compatibility)
+    """
+    return _query_all_jobs_sync()
 
-    finally:
-        # Close the Weaviate connection properly
-        print("\n" + "=" * 80)
-        print("🧹 Closing connections...")
-        manager.close()
-        print("✅ Done!")
+async def query_all_jobs_async():
+    """
+    Async wrapper for query_all_jobs
+    """
+    return await sync_to_async(_query_all_jobs_sync)()
+
+
+# if __name__ == "__main__":
+#     import json
+#
+#     print("🚀 Starting Content-Based Recommendation Test (with Skill Overlap Weighting)...")
+#     print("=" * 80)
+#
+#     query_item = {
+#         "skills": ["Python", "FastAPI", "PostgreSQL", "Docker", "AWS"],
+#         "title": "Back-end developer",
+#         "description": "We are looking for a skilled Back-end developer with experience in "
+#                        "Python and FastAPI to join our dynamic team. The ideal"
+#                        " candidate will have a strong background in building "
+#                        "scalable web applications and working with cloud services like AWS. "
+#                        "Familiarity with PostgreSQL and containerization using Docker is a must."
+#     }
+#
+#     print("\n📋 Query Item:")
+#     print(json.dumps(query_item, indent=2, ensure_ascii=False))
+#     print("\n" + "=" * 80)
+#
+#     try:
+#         print("\n🔍 Searching for similar jobs (Hybrid: Semantic + Skill Overlap)...")
+#         recs = asyncio.run(get_content_based_recommendations(query_item, top_n=5, skill_weight=0.4))
+#
+#         if not recs:
+#             print("\n❌ No recommendations found. The JobPosting collection might be empty.")
+#         else:
+#             print(f"\n✅ Found {len(recs)} recommendations:\n")
+#             for idx, r in enumerate(recs, 1):
+#                 print(f"\n{'='*80}")
+#                 print(f"#{idx} - {r['title']}")
+#                 print(f"{'='*80}")
+#                 print(f"🆔 Job ID: {r['job_id']}")
+#                 print(f"🧠 Skills: {r['skills']}")
+#                 print(f"📊 Scores:")
+#                 print(f"   • Semantic Similarity: {r['semantic_similarity']:.3f}")
+#                 print(f"   • Similarity: {r['similarity']:.3f} (Overall)")
+#                 print(f"📝 Description: {r['description'][:150]}...")
+#
+#     except Exception as e:
+#         print(f"\n❌ Error occurred: {str(e)}")
+#         import traceback
+#         traceback.print_exc()
+#
+#     finally:
+#         # Close the Weaviate connection properly
+#         print("\n" + "=" * 80)
+#         print("🧹 Closing connections...")
+#         manager.close()
+#         print("✅ Done!")

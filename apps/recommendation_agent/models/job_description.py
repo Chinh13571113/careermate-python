@@ -1,6 +1,6 @@
 from django.db import models
 from .jd_skill import JDSkill
-from .job_postings import JobPostings
+from .job_posting import JobPostings
 
 
 

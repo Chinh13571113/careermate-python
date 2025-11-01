@@ -4,142 +4,135 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework import status
 from django.db.models import Prefetch
+import asyncio
 from .models import JobPostings, JobDescription, Account, Candidate, Resume, Skill
-from .serializers import JobPostingSerializer, AccountSerializer, CandidateSerializer
+from .serializers import (
+    JobPostingSerializer,
+    AccountSerializer,
+    CandidateSerializer,
+    JobRecommendationRequestSerializer,
+    JobRecommendationResponseSerializer
+)
+from .services.recommendation_system import get_hybrid_job_recommendations, query_all_jobs
 
 
+@extend_schema(
+    tags=['Job Recommendations'],
+    request=JobRecommendationRequestSerializer,
+    responses={
+        200: JobRecommendationResponseSerializer,
+        400: {'description': 'Bad Request - Missing candidate_id'},
+        500: {'description': 'Internal Server Error'}
+    },
+    description="Get hybrid job recommendations for a candidate based on collaborative filtering and content-based filtering",
+    summary="Get Job Recommendations"
+)
 class JobPostingView(APIView):
     """
-    API endpoint to get all job postings with filters
-    GET /job-postings/ - List all job postings
+    API endpoint to get hybrid job recommendations for a candidate
+    POST /job-recommendations/ - Get personalized job recommendations
     """
     permission_classes = [AllowAny]
 
-    def get(self, request):
-        """
-        Get list of job postings with optional filtering
-        Query params:
-        - status: Filter by status (e.g., 'ACTIVE')
-        - recruiter_id: Filter by recruiter ID
-        - limit: Number of results to return (default: 20)
-        - offset: Offset for pagination (default: 0)
-        """
+    def post(self, request):
         try:
-            # Get query parameters
-            job_status = request.GET.get('status', None)
-            recruiter_id = request.GET.get('recruiter_id', None)
-            limit = int(request.GET.get('limit', 20))
-            offset = int(request.GET.get('offset', 0))
+            # 1️⃣ Validate and extract data from request
+            serializer = JobRecommendationRequestSerializer(data=request.data)
+            if not serializer.is_valid():
+                return Response({
+                    "error": "Invalid request data",
+                    "details": serializer.errors
+                }, status=status.HTTP_400_BAD_REQUEST)
 
-            # Build query
-            queryset = JobPostings.objects.select_related('recruiter').prefetch_related(
-                Prefetch('jobdescription_set', queryset=JobDescription.objects.select_related('jd_skill'))
-            )
+            validated_data = serializer.validated_data
+            candidate_id = validated_data.get("candidate_id")
+            top_n = validated_data.get("top_n", 5)
 
-            # Apply filters
-            if job_status:
-                queryset = queryset.filter(status=job_status)
-            if recruiter_id:
-                queryset = queryset.filter(recruiter_id=recruiter_id)
+            # 2️⃣ Build query_item from request data (skills, title, description)
+            query_item = {}
 
-            # Get total count
-            total_count = queryset.count()
+            # Add skills if provided
+            if "skills" in validated_data and validated_data.get("skills"):
+                query_item["skills"] = validated_data["skills"]
 
-            # Apply pagination
-            jobs = queryset[offset:offset + limit]
+            # Add title if provided
+            if "title" in validated_data and validated_data.get("title"):
+                query_item["title"] = validated_data["title"]
 
-            # Serialize data
-            job_data = []
-            for job in jobs:
-                # Get skills for this job
-                skills = [jd.jd_skill.name for jd in job.jobdescription_set.all()]
+            # Add description if provided
+            if "description" in validated_data and validated_data.get("description"):
+                query_item["description"] = validated_data["description"]
 
-                job_data.append({
-                    'id': job.id,
-                    'title': job.title,
-                    'description': job.description or '',
-                    'address': job.address or '',
-                    'status': job.status or '',
-                    'expiration_date': job.expiration_date,
-                    'created_at': job.created_at,
-                    'recruiter_id': job.recruiter.id,
-                    'company_name': job.recruiter.company_name,
-                    'skills': skills
-                })
+            # If no query parameters provided, try to fetch from candidate's profile
+            if not query_item:
+                try:
+                    # Fetch candidate data from database
+                    candidate = Candidate.objects.select_related('account').prefetch_related(
+                        Prefetch('resumes', queryset=Resume.objects.prefetch_related('skills'))
+                    ).filter(candidate_id=candidate_id).first()
 
-            serializer = JobPostingSerializer(job_data, many=True)
+                    if not candidate:
+                        return Response({
+                            "error": "Candidate not found",
+                            "candidate_id": candidate_id
+                        }, status=status.HTTP_404_NOT_FOUND)
 
+                    # Build query_item from candidate's resume
+                    if candidate.title:
+                        query_item["title"] = candidate.title
+
+                    # Get skills from latest resume
+                    resumes = list(candidate.resumes.all())
+                    if resumes:
+                        latest_resume = resumes[0]
+                        skills = [skill.skill_name for skill in latest_resume.skills.all()]
+                        if skills:
+                            query_item["skills"] = skills
+                        if latest_resume.about_me:
+                            query_item["description"] = latest_resume.about_me
+
+                    # If still no query_item data, return error
+                    if not query_item:
+                        return Response({
+                            "error": "No query parameters provided and candidate has no resume data",
+                            "candidate_id": candidate_id
+                        }, status=status.HTTP_400_BAD_REQUEST)
+
+                except Exception as e:
+                    return Response({
+                        "error": "Failed to fetch candidate data",
+                        "candidate_id": candidate_id,
+                        "details": str(e)
+                    }, status=status.HTTP_404_NOT_FOUND)
+
+            # 3️⃣ Lấy danh sách job từ DB hoặc Weaviate
+            job_ids = [j["job_id"] for j in query_all_jobs()]
+
+            # 4️⃣ Gọi service hybrid with proper async handling
+            recs = asyncio.run(get_hybrid_job_recommendations(
+                candidate_id=candidate_id,
+                query_item=query_item,
+                job_ids=job_ids,
+                top_n=top_n
+            ))
+
+            # 5️⃣ Trả về response JSON
             return Response({
-                'success': True,
-                'total': total_count,
-                'limit': limit,
-                'offset': offset,
-                'data': serializer.data
+                "ok": True,
+                "results": recs
             }, status=status.HTTP_200_OK)
 
         except Exception as e:
+            import traceback
             return Response({
-                'success': False,
-                'error': str(e)
+                "ok": False,
+                "error": str(e),
+                "traceback": traceback.format_exc()
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-@extend_schema(tags=['Accounts'])
-class AccountView(APIView):
-    """
-    API endpoint to get all accounts
-    GET /accounts/ - List all accounts
-    """
-    permission_classes = [AllowAny]
 
-    def get(self, request):
-        try:
-            # Get query parameters
-            account_status = request.GET.get('status', None)
-            email = request.GET.get('email', None)
-            limit = int(request.GET.get('limit', 20))
-            offset = int(request.GET.get('offset', 0))
 
-            # Build query
-            queryset = Account.objects.all()
-
-            # Apply filters
-            if account_status:
-                queryset = queryset.filter(status=account_status)
-            if email:
-                queryset = queryset.filter(email__icontains=email)
-
-            # Get total count
-            total_count = queryset.count()
-
-            # Apply pagination
-            accounts = queryset[offset:offset + limit]
-
-            # Serialize data
-            account_data = []
-            for account in accounts:
-                account_data.append({
-                    'account_id': account.account_id,
-                    'email': account.email,
-                    'full_name': account.full_name or '',
-                    'status': account.status or '',
-                })
-
-            serializer = AccountSerializer(account_data, many=True)
-
-            return Response({
-                'success': True,
-                'total': total_count,
-                'limit': limit,
-                'offset': offset,
-                'data': serializer.data
-            }, status=status.HTTP_200_OK)
-
-        except Exception as e:
-            return Response({
-                'success': False,
-                'error': str(e)
-            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 @extend_schema(tags=['Candidates'])

@@ -50,6 +50,32 @@ class TrainCFModelSerializer(serializers.Serializer):
         default="BPR",
         help_text="Model type: 'BPR' (Bayesian Personalized Ranking - recommended for implicit feedback)"
     )
+
+class JobRecommendationRequestSerializer(serializers.Serializer):
+    candidate_id = serializers.IntegerField(required=True, help_text="ID of the candidate to get recommendations for")
+    skills = serializers.ListField(
+        child=serializers.CharField(),
+        required=False,
+        allow_empty=True,
+        help_text="List of skills to match (e.g., ['Python', 'Django', 'PostgreSQL'])"
+    )
+    title = serializers.CharField(
+        required=False,
+        allow_blank=True,
+        help_text="Job title or candidate title to match (e.g., 'Backend Developer')"
+    )
+    description = serializers.CharField(
+        required=False,
+        allow_blank=True,
+        help_text="Job description or candidate profile description to match"
+    )
+    top_n = serializers.IntegerField(required=False, default=5, help_text="Number of top recommendations to return")
+
+class JobRecommendationResponseSerializer(serializers.Serializer):
+    ok = serializers.BooleanField()
+    candidate_id = serializers.IntegerField()
+    results = serializers.ListField(child=serializers.DictField())
+
 class SkillSerializer(serializers.ModelSerializer):
     class Meta:
         model = Skill

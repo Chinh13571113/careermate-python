@@ -95,6 +95,14 @@ DATABASES = {
     },
 }
 
+CELERY_BEAT_SCHEDULE = {
+    "retrain-cf-model-every-6h": {
+        "task": "apps.recommendations.tasks.train_cf_model_task",
+        "schedule": 21600.0,  # 6 giờ
+    },
+}
+
+
 AUTH_PASSWORD_VALIDATORS = []
 
 LANGUAGE_CODE = 'en-us'

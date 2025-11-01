@@ -22,4 +22,8 @@ app.conf.beat_schedule = {
         'task': 'apps.recommendation_agent.tasks.full_resync',
         'schedule': crontab(hour=2, minute=0),  # Every day at 2:00 AM
     },
+    "retrain-cf-model-every-6h": {
+        "task": "apps.recommendations.tasks.train_cf_model_task",
+        "schedule": 21600.0,  # 6 giờ
+    },
 }

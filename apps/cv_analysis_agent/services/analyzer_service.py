@@ -48,9 +48,7 @@ def extract_json_from_response(response: str) -> str:
     raise ValueError(f"No valid JSON found in response: {response[:200]}")
 
 
-def analyze_resume_text(text: str,give_feedback:bool) -> dict:
-    """Extract structured data from resume text"""
-    # Validate input text
+def analyze_resume_text(text: str) -> dict:
     if not text or not text.strip():
         raise ValueError("Cannot analyze empty resume text. PDF extraction may have failed.")
 
@@ -62,24 +60,13 @@ def analyze_resume_text(text: str,give_feedback:bool) -> dict:
     model = get_cached_model(temperature=0.1)
 
     # Streamlined prompt - system instruction + user content
-    if give_feedback:
-        full_prompt = f"""{extract_resume_prompts.SYSTEM_PROMPT_RESUME_ANALYSIS}
+    full_prompt = f"""{extract_resume_prompts.SYSTEM_PROMPT}
 
-        Extract fields from this resume:
-        
-        {text}
-        
-        Analyze this resume and provide feedback:
-        
-        Return ONLY valid JSON with strength, weakness, suggest, and overall_score (0-100)."""
-    else:
-        full_prompt = f"""{extract_resume_prompts.SYSTEM_PROMPT}
+            Extract fields from this resume:
 
-        Extract fields from this resume:
-        
-        {text}
-        
-        Return ONLY valid JSON."""
+            {text}
+
+            Return ONLY valid JSON."""
 
     response = model.invoke(full_prompt)
 
@@ -100,32 +87,22 @@ def analyze_resume_text(text: str,give_feedback:bool) -> dict:
 
 
 
-def analyze_resume_sync(file,give_feedback:bool) -> dict:
+def analyze_resume_sync(file) -> dict:
     """
     Synchronously analyze a resume file.
     Returns structured data and feedback.
     """
     # Step 1: Extract text from PDF
     text = extract_text(file)
-    result = ""
     # Step 2: Extract structured information
-    structured = analyze_resume_text(text,give_feedback)
+    structured = analyze_resume_text(text)
     print("feedback data:", type(structured))
-    if give_feedback:
-        result = "feedback"
-    else:
-        result = "structured_resume"
     return {
-        result: structured,
+        "result": structured,
     }
 
 
 
 
 
-import hashlib
 
-def get_user_seed(user_id: str, base_seed: int = 1234) -> int:
-    # Sinh seed ổn định từ user_id
-    user_hash = int(hashlib.sha256(user_id.encode()).hexdigest(), 16)
-    return (user_hash + base_seed) % (2**31)

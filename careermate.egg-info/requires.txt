@@ -163,3 +163,4 @@ trl>=0.23.0
 psycopg>=3.1.8
 scikit-surprise>=1.1.4
 django-cors-headers>=4.9.0
+language-tool-python>=2.9.5

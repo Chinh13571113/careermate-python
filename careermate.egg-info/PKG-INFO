@@ -169,6 +169,7 @@ Requires-Dist: trl>=0.23.0
 Requires-Dist: psycopg>=3.1.8
 Requires-Dist: scikit-surprise>=1.1.4
 Requires-Dist: django-cors-headers>=4.9.0
+Requires-Dist: language-tool-python>=2.9.5
 
 Dưới đây là file `README.md` viết bằng Markdown, mô tả đầy đủ cấu trúc project Django mà bạn đưa — chuyên nghiệp, rõ ràng, copy-paste dùng ngay 👇
 

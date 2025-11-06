@@ -71,7 +71,7 @@ class CVAnalyzeView(APIView):
         }, status=status.HTTP_202_ACCEPTED)
 
 @extend_schema(
-    tags=["CV Status"],
+    tags=["CV Parser"],
     summary="Get CV Analysis Task Status",
     description="Check the status and result of a CV analysis task using task_id.",
     responses={

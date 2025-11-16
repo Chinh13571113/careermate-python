@@ -45,8 +45,11 @@ async def get_content_based_recommendations(
     for job in results:
         job_skills = _parse_skills(job["skills"])
 
-        # Calculate semantic similarity
-        semantic_similarity = 1 - job["distance"]
+        # Calculate semantic similarity (normalize to [0, 1])
+        # Cosine distance in Weaviate: 0 = identical, 2 = opposite
+        # Convert to similarity: 1 = identical, 0 = opposite
+        distance = job["distance"]
+        semantic_similarity = max(0.0, min(1.0, (2 - distance) / 2))
 
         # Calculate skill overlap
         skill_overlap_score = calculate_skill_overlap_for_job_recommendation(
@@ -106,4 +109,3 @@ def _calculate_title_boost(query_title: str, job_title: str) -> float:
         return min(boost, 0.2)  # Cap at 20%
 
     return 0.0
-

@@ -19,17 +19,6 @@ FEEDBACK_WEIGHTS = {
 
 
 def _collaborative_filtering_sync(candidate_id: int, job_ids: list, n: int = 5):
-    """
-    User-Based Collaborative Filtering with Feedback Weighting
-
-    Args:
-        candidate_id: Target user ID
-        job_ids: Available job IDs
-        n: Number of recommendations
-
-    Returns:
-        list: Recommended jobs with scores
-    """
     from apps.recommendation_agent.models import JobFeedback, JobPostings
 
     print(f"\n🔍 CF Recommendation for Candidate {candidate_id}")

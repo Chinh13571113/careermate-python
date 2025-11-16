@@ -1,5 +1,3 @@
-
-
 def calculate_skill_overlap(query_skills: list, job_skills: list) -> float:
     if not query_skills or not job_skills:
         return 0.0
@@ -29,6 +27,10 @@ def calculate_skill_overlap_for_job_recommendation(user_skills: list, job_skills
     Tính độ trùng kỹ năng giữa ứng viên (user) và job.
     - user_skills: kỹ năng ứng viên (query)
     - job_skills: kỹ năng trong job posting
+
+    Logic: Chỉ tính recall_job (user có bao nhiêu % skill job yêu cầu)
+    Ứng viên có thêm skill khác KHÔNG bị penalty.
+
     Trả về giá trị [0, 1].
     """
     if not user_skills or not job_skills:
@@ -42,12 +44,9 @@ def calculate_skill_overlap_for_job_recommendation(user_skills: list, job_skills
     if not overlap:
         return 0.0
 
-    # Recall: ứng viên cover bao nhiêu % kỹ năng job yêu cầu
+    # Chỉ tính recall_job: user cover bao nhiêu % skill job yêu cầu
+    # Nếu job cần [python, pandas] và user có [python, pandas, pytorch]
+    # → 2/2 = 100% (có đủ yêu cầu, pytorch là bonus không bị trừ điểm)
     recall_job = len(overlap) / len(job)
-    # Precision: bao nhiêu % kỹ năng ứng viên phù hợp job
-    recall_user = len(overlap) / len(user)
 
-    # F1-like score
-    f1_like = (2 * recall_job * recall_user) / (recall_job + recall_user)
-    return round(f1_like, 3)
-
+    return recall_job

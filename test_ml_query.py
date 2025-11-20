@@ -5,7 +5,7 @@ Should prioritize ML Engineer jobs over generic Python jobs
 import os
 import django
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'careermate.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Careermate.settings')
 django.setup()
 
 import asyncio

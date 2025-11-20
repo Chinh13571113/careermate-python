@@ -6,7 +6,7 @@ import os
 import django
 
 # Setup Django environment
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Careermate.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'careermate.settings')
 django.setup()
 
 from apps.recommendation_agent.services.weaviate_service import cf_service

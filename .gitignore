@@ -3,3 +3,4 @@
 compose.yaml
 db.sqlite3
 /agent_core/data/
+__pycache__/

@@ -1,0 +1,18 @@
+STACK OVERFLOW SURVEY - CV TRAINING COLUMNS MAPPING
+============================================================
+
+Export Date: 2025-10-15 16:22:20
+Source File: survey_results_public_fix.csv
+Export File: stackoverflow_cv_training_dataset.csv
+
+COLUMN CATEGORIES:
+--------------------
+
+Core Profile:
+  - MainBranch (100.0% complete)
+  - Age (100.0% complete)
+  - Employment (100.0% complete)
+  - RemoteWork (83.8% complete)
+  - DevType (90.8% complete)
+  - OrgSize (72.6% complete)
+  - Country (90.1% complete)

@@ -10,7 +10,7 @@ def main():
     # Suppress Triton warnings about missing CUDA binaries
     warnings.filterwarnings('ignore', message='Failed to find.*', module='triton.knobs')
 
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Careermate.settings')
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'careermate.settings')
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:

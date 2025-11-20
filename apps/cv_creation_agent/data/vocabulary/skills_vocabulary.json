@@ -1,0 +1,1305 @@
+{
+  "languages": {
+    "python": {
+      "canonical": "Python",
+      "aliases": [
+        "py",
+        "python3",
+        "python2",
+        "python3.x"
+      ],
+      "category": "general_purpose",
+      "frequency": 30719
+    },
+    "javascript": {
+      "canonical": "JavaScript",
+      "aliases": [
+        "js",
+        "javascript",
+        "ecmascript",
+        "es6",
+        "es2015"
+      ],
+      "category": "web",
+      "frequency": 37492
+    },
+    "typescript": {
+      "canonical": "TypeScript",
+      "aliases": [
+        "ts",
+        "typescript"
+      ],
+      "category": "web",
+      "frequency": 23150
+    },
+    "java": {
+      "canonical": "Java",
+      "aliases": [
+        "java"
+      ],
+      "category": "general_purpose",
+      "frequency": 18239
+    },
+    "c#": {
+      "canonical": "C#",
+      "aliases": [
+        "csharp",
+        "c sharp",
+        "cs"
+      ],
+      "category": "general_purpose",
+      "frequency": 16318
+    },
+    "c++": {
+      "canonical": "C++",
+      "aliases": [
+        "cpp",
+        "c plus plus"
+      ],
+      "category": "systems",
+      "frequency": 13827
+    },
+    "c": {
+      "canonical": "C",
+      "aliases": [
+        "c lang"
+      ],
+      "category": "systems",
+      "frequency": 12184
+    },
+    "go": {
+      "canonical": "Go",
+      "aliases": [
+        "golang",
+        "go lang"
+      ],
+      "category": "systems",
+      "frequency": 8103
+    },
+    "rust": {
+      "canonical": "Rust",
+      "aliases": [
+        "rust lang"
+      ],
+      "category": "systems",
+      "frequency": 7559
+    },
+    "ruby": {
+      "canonical": "Ruby",
+      "aliases": [
+        "rb"
+      ],
+      "category": "web",
+      "frequency": 3147
+    },
+    "php": {
+      "canonical": "PHP",
+      "aliases": [
+        "php"
+      ],
+      "category": "web",
+      "frequency": 10951
+    },
+    "swift": {
+      "canonical": "Swift",
+      "aliases": [
+        "swift"
+      ],
+      "category": "mobile",
+      "frequency": 2829
+    },
+    "kotlin": {
+      "canonical": "Kotlin",
+      "aliases": [
+        "kotlin"
+      ],
+      "category": "mobile",
+      "frequency": 5665
+    },
+    "sql": {
+      "canonical": "SQL",
+      "aliases": [
+        "sql",
+        "structured query language"
+      ],
+      "category": "database",
+      "frequency": 30682
+    },
+    "r": {
+      "canonical": "R",
+      "aliases": [
+        "r lang",
+        "r language"
+      ],
+      "category": "data_science",
+      "frequency": 2595
+    },
+    "matlab": {
+      "canonical": "MATLAB",
+      "aliases": [
+        "matlab"
+      ],
+      "category": "scientific",
+      "frequency": 2378
+    },
+    "scala": {
+      "canonical": "Scala",
+      "aliases": [
+        "scala"
+      ],
+      "category": "general_purpose",
+      "frequency": 1547
+    },
+    "dart": {
+      "canonical": "Dart",
+      "aliases": [
+        "dart"
+      ],
+      "category": "mobile",
+      "frequency": 3594
+    },
+    "html/css": {
+      "canonical": "HTML/CSS",
+      "aliases": [
+        "html",
+        "css",
+        "html5",
+        "css3"
+      ],
+      "category": "web",
+      "frequency": 31816
+    },
+    "bash/shell": {
+      "canonical": "Bash/Shell",
+      "aliases": [
+        "bash",
+        "shell",
+        "sh",
+        "zsh"
+      ],
+      "category": "scripting",
+      "frequency": 0
+    },
+    "bash/shell_(all_shells)": {
+      "canonical": "Bash/Shell (all shells)",
+      "aliases": [
+        "bash/shell (all shells)"
+      ],
+      "category": "other",
+      "frequency": 20412
+    },
+    "powershell": {
+      "canonical": "PowerShell",
+      "aliases": [
+        "powershell"
+      ],
+      "category": "other",
+      "frequency": 8328
+    },
+    "lua": {
+      "canonical": "Lua",
+      "aliases": [
+        "lua"
+      ],
+      "category": "other",
+      "frequency": 3728
+    },
+    "assembly": {
+      "canonical": "Assembly",
+      "aliases": [
+        "assembly"
+      ],
+      "category": "other",
+      "frequency": 3233
+    },
+    "visual_basic_(.net)": {
+      "canonical": "Visual Basic (.Net)",
+      "aliases": [
+        "visual basic (.net)"
+      ],
+      "category": "other",
+      "frequency": 2499
+    },
+    "vba": {
+      "canonical": "VBA",
+      "aliases": [
+        "vba"
+      ],
+      "category": "other",
+      "frequency": 2248
+    },
+    "groovy": {
+      "canonical": "Groovy",
+      "aliases": [
+        "groovy"
+      ],
+      "category": "other",
+      "frequency": 2004
+    },
+    "perl": {
+      "canonical": "Perl",
+      "aliases": [
+        "perl"
+      ],
+      "category": "other",
+      "frequency": 1482
+    },
+    "gdscript": {
+      "canonical": "GDScript",
+      "aliases": [
+        "gdscript"
+      ],
+      "category": "other",
+      "frequency": 1402
+    },
+    "objective-c": {
+      "canonical": "Objective-C",
+      "aliases": [
+        "objective-c"
+      ],
+      "category": "other",
+      "frequency": 1283
+    },
+    "elixir": {
+      "canonical": "Elixir",
+      "aliases": [
+        "elixir"
+      ],
+      "category": "other",
+      "frequency": 1243
+    },
+    "haskell": {
+      "canonical": "Haskell",
+      "aliases": [
+        "haskell"
+      ],
+      "category": "other",
+      "frequency": 1193
+    },
+    "delphi": {
+      "canonical": "Delphi",
+      "aliases": [
+        "delphi"
+      ],
+      "category": "other",
+      "frequency": 1073
+    },
+    "micropython": {
+      "canonical": "MicroPython",
+      "aliases": [
+        "micropython"
+      ],
+      "category": "other",
+      "frequency": 942
+    },
+    "lisp": {
+      "canonical": "Lisp",
+      "aliases": [
+        "lisp"
+      ],
+      "category": "other",
+      "frequency": 889
+    },
+    "clojure": {
+      "canonical": "Clojure",
+      "aliases": [
+        "clojure"
+      ],
+      "category": "other",
+      "frequency": 737
+    },
+    "julia": {
+      "canonical": "Julia",
+      "aliases": [
+        "julia"
+      ],
+      "category": "other",
+      "frequency": 684
+    },
+    "zig": {
+      "canonical": "Zig",
+      "aliases": [
+        "zig"
+      ],
+      "category": "other",
+      "frequency": 667
+    },
+    "fortran": {
+      "canonical": "Fortran",
+      "aliases": [
+        "fortran"
+      ],
+      "category": "other",
+      "frequency": 665
+    },
+    "solidity": {
+      "canonical": "Solidity",
+      "aliases": [
+        "solidity"
+      ],
+      "category": "other",
+      "frequency": 644
+    },
+    "ada": {
+      "canonical": "Ada",
+      "aliases": [
+        "ada"
+      ],
+      "category": "other",
+      "frequency": 542
+    },
+    "erlang": {
+      "canonical": "Erlang",
+      "aliases": [
+        "erlang"
+      ],
+      "category": "other",
+      "frequency": 522
+    },
+    "f#": {
+      "canonical": "F#",
+      "aliases": [
+        "f#"
+      ],
+      "category": "other",
+      "frequency": 512
+    },
+    "apex": {
+      "canonical": "Apex",
+      "aliases": [
+        "apex"
+      ],
+      "category": "other",
+      "frequency": 502
+    },
+    "prolog": {
+      "canonical": "Prolog",
+      "aliases": [
+        "prolog"
+      ],
+      "category": "other",
+      "frequency": 486
+    },
+    "ocaml": {
+      "canonical": "OCaml",
+      "aliases": [
+        "ocaml"
+      ],
+      "category": "other",
+      "frequency": 458
+    },
+    "cobol": {
+      "canonical": "Cobol",
+      "aliases": [
+        "cobol"
+      ],
+      "category": "other",
+      "frequency": 413
+    },
+    "crystal": {
+      "canonical": "Crystal",
+      "aliases": [
+        "crystal"
+      ],
+      "category": "other",
+      "frequency": 253
+    },
+    "nim": {
+      "canonical": "Nim",
+      "aliases": [
+        "nim"
+      ],
+      "category": "other",
+      "frequency": 210
+    },
+    "zephyr": {
+      "canonical": "Zephyr",
+      "aliases": [
+        "zephyr"
+      ],
+      "category": "other",
+      "frequency": 184
+    }
+  },
+  "frameworks": {
+    "react": {
+      "canonical": "React",
+      "aliases": [
+        "reactjs",
+        "react.js"
+      ],
+      "category": "web_frontend",
+      "language": "JavaScript",
+      "frequency": 0
+    },
+    "angular": {
+      "canonical": "Angular",
+      "aliases": [
+        "angularjs",
+        "angular.js"
+      ],
+      "category": "web_frontend",
+      "language": "JavaScript",
+      "frequency": 0
+    },
+    "vue_js": {
+      "canonical": "Vue.js",
+      "aliases": [
+        "vue",
+        "vuejs"
+      ],
+      "category": "web_frontend",
+      "language": "JavaScript",
+      "frequency": 0
+    },
+    "django": {
+      "canonical": "Django",
+      "aliases": [
+        "django"
+      ],
+      "category": "web_backend",
+      "language": "Python",
+      "frequency": 0
+    },
+    "flask": {
+      "canonical": "Flask",
+      "aliases": [
+        "flask"
+      ],
+      "category": "web_backend",
+      "language": "Python",
+      "frequency": 0
+    },
+    "fastapi": {
+      "canonical": "FastAPI",
+      "aliases": [
+        "fastapi"
+      ],
+      "category": "web_backend",
+      "language": "Python",
+      "frequency": 0
+    },
+    "spring": {
+      "canonical": "Spring",
+      "aliases": [
+        "spring boot",
+        "spring framework"
+      ],
+      "category": "web_backend",
+      "language": "Java",
+      "frequency": 0
+    },
+    "express_js": {
+      "canonical": "Express.js",
+      "aliases": [
+        "express",
+        "expressjs"
+      ],
+      "category": "web_backend",
+      "language": "JavaScript",
+      "frequency": 0
+    },
+    "node_js": {
+      "canonical": "Node.js",
+      "aliases": [
+        "node",
+        "nodejs"
+      ],
+      "category": "runtime",
+      "language": "JavaScript",
+      "frequency": 0
+    },
+    "_net": {
+      "canonical": ".NET",
+      "aliases": [
+        "dotnet",
+        "asp.net",
+        "aspnet"
+      ],
+      "category": "web_backend",
+      "language": "C#",
+      "frequency": 0
+    },
+    "laravel": {
+      "canonical": "Laravel",
+      "aliases": [
+        "laravel"
+      ],
+      "category": "web_backend",
+      "language": "PHP",
+      "frequency": 0
+    },
+    "ruby_on_rails": {
+      "canonical": "Ruby on Rails",
+      "aliases": [
+        "rails",
+        "ror"
+      ],
+      "category": "web_backend",
+      "language": "Ruby",
+      "frequency": 0
+    },
+    "react_native": {
+      "canonical": "React Native",
+      "aliases": [
+        "react-native",
+        "rn"
+      ],
+      "category": "mobile",
+      "language": "JavaScript",
+      "frequency": 0
+    },
+    "flutter": {
+      "canonical": "Flutter",
+      "aliases": [
+        "flutter"
+      ],
+      "category": "mobile",
+      "language": "Dart",
+      "frequency": 0
+    },
+    "swiftui": {
+      "canonical": "SwiftUI",
+      "aliases": [
+        "swiftui"
+      ],
+      "category": "mobile",
+      "language": "Swift",
+      "frequency": 0
+    },
+    "tensorflow": {
+      "canonical": "TensorFlow",
+      "aliases": [
+        "tensorflow",
+        "tf"
+      ],
+      "category": "machine_learning",
+      "language": "Python",
+      "frequency": 0
+    },
+    "pytorch": {
+      "canonical": "PyTorch",
+      "aliases": [
+        "pytorch",
+        "torch"
+      ],
+      "category": "machine_learning",
+      "language": "Python",
+      "frequency": 0
+    },
+    "scikit-learn": {
+      "canonical": "scikit-learn",
+      "aliases": [
+        "sklearn",
+        "scikit learn"
+      ],
+      "category": "machine_learning",
+      "language": "Python",
+      "frequency": 0
+    },
+    "pandas": {
+      "canonical": "Pandas",
+      "aliases": [
+        "pandas"
+      ],
+      "category": "data_analysis",
+      "language": "Python",
+      "frequency": 0
+    },
+    "numpy": {
+      "canonical": "NumPy",
+      "aliases": [
+        "numpy"
+      ],
+      "category": "data_analysis",
+      "language": "Python",
+      "frequency": 0
+    },
+    "keras": {
+      "canonical": "Keras",
+      "aliases": [
+        "keras"
+      ],
+      "category": "machine_learning",
+      "language": "Python",
+      "frequency": 0
+    }
+  },
+  "databases": {
+    "postgresql": {
+      "canonical": "PostgreSQL",
+      "aliases": [
+        "postgres",
+        "psql"
+      ],
+      "category": "relational",
+      "frequency": 25536
+    },
+    "mysql": {
+      "canonical": "MySQL",
+      "aliases": [
+        "mysql"
+      ],
+      "category": "relational",
+      "frequency": 21099
+    },
+    "mongodb": {
+      "canonical": "MongoDB",
+      "aliases": [
+        "mongo"
+      ],
+      "category": "nosql_document",
+      "frequency": 13007
+    },
+    "redis": {
+      "canonical": "Redis",
+      "aliases": [
+        "redis"
+      ],
+      "category": "nosql_keyvalue",
+      "frequency": 10463
+    },
+    "sqlite": {
+      "canonical": "SQLite",
+      "aliases": [
+        "sqlite",
+        "sqlite3"
+      ],
+      "category": "relational",
+      "frequency": 17365
+    },
+    "microsoft_sql_server": {
+      "canonical": "Microsoft SQL Server",
+      "aliases": [
+        "mssql",
+        "sql server",
+        "sqlserver"
+      ],
+      "category": "relational",
+      "frequency": 13275
+    },
+    "oracle": {
+      "canonical": "Oracle",
+      "aliases": [
+        "oracle db",
+        "oracledb"
+      ],
+      "category": "relational",
+      "frequency": 5273
+    },
+    "elasticsearch": {
+      "canonical": "Elasticsearch",
+      "aliases": [
+        "elastic",
+        "es"
+      ],
+      "category": "search",
+      "frequency": 6533
+    },
+    "dynamodb": {
+      "canonical": "Dynamodb",
+      "aliases": [
+        "dynamodb"
+      ],
+      "category": "other",
+      "frequency": 4138
+    },
+    "cassandra": {
+      "canonical": "Cassandra",
+      "aliases": [
+        "cassandra"
+      ],
+      "category": "nosql_widecolumn",
+      "frequency": 1268
+    },
+    "firebase": {
+      "canonical": "Firebase",
+      "aliases": [
+        "firebase"
+      ],
+      "category": "baas",
+      "frequency": 0
+    },
+    "mariadb": {
+      "canonical": "MariaDB",
+      "aliases": [
+        "mariadb"
+      ],
+      "category": "other",
+      "frequency": 8991
+    },
+    "firebase_realtime_database": {
+      "canonical": "Firebase Realtime Database",
+      "aliases": [
+        "firebase realtime database"
+      ],
+      "category": "other",
+      "frequency": 3018
+    },
+    "cloud_firestore": {
+      "canonical": "Cloud Firestore",
+      "aliases": [
+        "cloud firestore"
+      ],
+      "category": "other",
+      "frequency": 2842
+    },
+    "bigquery": {
+      "canonical": "BigQuery",
+      "aliases": [
+        "bigquery"
+      ],
+      "category": "other",
+      "frequency": 2531
+    },
+    "microsoft_access": {
+      "canonical": "Microsoft Access",
+      "aliases": [
+        "microsoft access"
+      ],
+      "category": "other",
+      "frequency": 2193
+    },
+    "supabase": {
+      "canonical": "Supabase",
+      "aliases": [
+        "supabase"
+      ],
+      "category": "other",
+      "frequency": 2078
+    },
+    "h2": {
+      "canonical": "H2",
+      "aliases": [
+        "h2"
+      ],
+      "category": "other",
+      "frequency": 2006
+    },
+    "cosmos_db": {
+      "canonical": "Cosmos DB",
+      "aliases": [
+        "cosmos db"
+      ],
+      "category": "other",
+      "frequency": 1746
+    },
+    "snowflake": {
+      "canonical": "Snowflake",
+      "aliases": [
+        "snowflake"
+      ],
+      "category": "other",
+      "frequency": 1364
+    },
+    "influxdb": {
+      "canonical": "InfluxDB",
+      "aliases": [
+        "influxdb"
+      ],
+      "category": "other",
+      "frequency": 1338
+    },
+    "databricks_sql": {
+      "canonical": "Databricks SQL",
+      "aliases": [
+        "databricks sql"
+      ],
+      "category": "other",
+      "frequency": 1003
+    },
+    "neo4j": {
+      "canonical": "Neo4J",
+      "aliases": [
+        "neo4j"
+      ],
+      "category": "other",
+      "frequency": 998
+    },
+    "ibm_db2": {
+      "canonical": "IBM DB2",
+      "aliases": [
+        "ibm db2"
+      ],
+      "category": "other",
+      "frequency": 914
+    },
+    "clickhouse": {
+      "canonical": "Clickhouse",
+      "aliases": [
+        "clickhouse"
+      ],
+      "category": "other",
+      "frequency": 890
+    },
+    "solr": {
+      "canonical": "Solr",
+      "aliases": [
+        "solr"
+      ],
+      "category": "other",
+      "frequency": 766
+    },
+    "duckdb": {
+      "canonical": "DuckDB",
+      "aliases": [
+        "duckdb"
+      ],
+      "category": "other",
+      "frequency": 710
+    },
+    "firebird": {
+      "canonical": "Firebird",
+      "aliases": [
+        "firebird"
+      ],
+      "category": "other",
+      "frequency": 563
+    },
+    "couch_db": {
+      "canonical": "Couch DB",
+      "aliases": [
+        "couch db"
+      ],
+      "category": "other",
+      "frequency": 534
+    },
+    "cockroachdb": {
+      "canonical": "Cockroachdb",
+      "aliases": [
+        "cockroachdb"
+      ],
+      "category": "other",
+      "frequency": 507
+    },
+    "couchbase": {
+      "canonical": "Couchbase",
+      "aliases": [
+        "couchbase"
+      ],
+      "category": "other",
+      "frequency": 353
+    }
+  },
+  "tools": {
+    "git": {
+      "canonical": "Git",
+      "aliases": [
+        "git"
+      ],
+      "category": "version_control",
+      "frequency": 0
+    },
+    "github": {
+      "canonical": "GitHub",
+      "aliases": [
+        "github"
+      ],
+      "category": "version_control",
+      "frequency": 0
+    },
+    "gitlab": {
+      "canonical": "GitLab",
+      "aliases": [
+        "gitlab"
+      ],
+      "category": "version_control",
+      "frequency": 0
+    },
+    "bitbucket": {
+      "canonical": "Bitbucket",
+      "aliases": [
+        "bitbucket"
+      ],
+      "category": "version_control",
+      "frequency": 0
+    },
+    "aws": {
+      "canonical": "AWS",
+      "aliases": [
+        "amazon web services",
+        "amazon aws"
+      ],
+      "category": "cloud",
+      "frequency": 0
+    },
+    "azure": {
+      "canonical": "Azure",
+      "aliases": [
+        "microsoft azure",
+        "ms azure"
+      ],
+      "category": "cloud",
+      "frequency": 0
+    },
+    "google_cloud": {
+      "canonical": "Google Cloud",
+      "aliases": [
+        "gcp",
+        "google cloud platform"
+      ],
+      "category": "cloud",
+      "frequency": 0
+    },
+    "docker": {
+      "canonical": "Docker",
+      "aliases": [
+        "docker"
+      ],
+      "category": "containerization",
+      "frequency": 29219
+    },
+    "kubernetes": {
+      "canonical": "Kubernetes",
+      "aliases": [
+        "k8s",
+        "kube"
+      ],
+      "category": "orchestration",
+      "frequency": 10503
+    },
+    "jenkins": {
+      "canonical": "Jenkins",
+      "aliases": [
+        "jenkins"
+      ],
+      "category": "cicd",
+      "frequency": 0
+    },
+    "github_actions": {
+      "canonical": "GitHub Actions",
+      "aliases": [
+        "github actions",
+        "gh actions"
+      ],
+      "category": "cicd",
+      "frequency": 0
+    },
+    "gitlab_ci": {
+      "canonical": "GitLab CI",
+      "aliases": [
+        "gitlab ci",
+        "gitlab ci/cd"
+      ],
+      "category": "cicd",
+      "frequency": 0
+    },
+    "jest": {
+      "canonical": "Jest",
+      "aliases": [
+        "jest"
+      ],
+      "category": "testing",
+      "frequency": 0
+    },
+    "pytest": {
+      "canonical": "Pytest",
+      "aliases": [
+        "pytest",
+        "py.test"
+      ],
+      "category": "testing",
+      "frequency": 0
+    },
+    "junit": {
+      "canonical": "JUnit",
+      "aliases": [
+        "junit"
+      ],
+      "category": "testing",
+      "frequency": 0
+    },
+    "selenium": {
+      "canonical": "Selenium",
+      "aliases": [
+        "selenium"
+      ],
+      "category": "testing",
+      "frequency": 0
+    },
+    "visual_studio_code": {
+      "canonical": "Visual Studio Code",
+      "aliases": [
+        "vscode",
+        "vs code"
+      ],
+      "category": "ide",
+      "frequency": 0
+    },
+    "intellij_idea": {
+      "canonical": "IntelliJ IDEA",
+      "aliases": [
+        "intellij",
+        "idea"
+      ],
+      "category": "ide",
+      "frequency": 0
+    },
+    "pycharm": {
+      "canonical": "PyCharm",
+      "aliases": [
+        "pycharm"
+      ],
+      "category": "ide",
+      "frequency": 0
+    },
+    "npm": {
+      "canonical": "npm",
+      "aliases": [
+        "npm"
+      ],
+      "category": "other",
+      "frequency": 26866
+    },
+    "pip": {
+      "canonical": "Pip",
+      "aliases": [
+        "pip"
+      ],
+      "category": "other",
+      "frequency": 17561
+    },
+    "homebrew": {
+      "canonical": "Homebrew",
+      "aliases": [
+        "homebrew"
+      ],
+      "category": "other",
+      "frequency": 12081
+    },
+    "make": {
+      "canonical": "Make",
+      "aliases": [
+        "make"
+      ],
+      "category": "other",
+      "frequency": 11259
+    },
+    "vite": {
+      "canonical": "Vite",
+      "aliases": [
+        "vite"
+      ],
+      "category": "other",
+      "frequency": 10804
+    },
+    "yarn": {
+      "canonical": "Yarn",
+      "aliases": [
+        "yarn"
+      ],
+      "category": "other",
+      "frequency": 10209
+    },
+    "webpack": {
+      "canonical": "Webpack",
+      "aliases": [
+        "webpack"
+      ],
+      "category": "other",
+      "frequency": 9970
+    },
+    "nuget": {
+      "canonical": "NuGet",
+      "aliases": [
+        "nuget"
+      ],
+      "category": "other",
+      "frequency": 8703
+    },
+    "maven_(build_tool)": {
+      "canonical": "Maven (build tool)",
+      "aliases": [
+        "maven (build tool)"
+      ],
+      "category": "other",
+      "frequency": 8435
+    },
+    "visual_studio_solution": {
+      "canonical": "Visual Studio Solution",
+      "aliases": [
+        "visual studio solution"
+      ],
+      "category": "other",
+      "frequency": 8315
+    },
+    "gradle": {
+      "canonical": "Gradle",
+      "aliases": [
+        "gradle"
+      ],
+      "category": "other",
+      "frequency": 8310
+    },
+    "msbuild": {
+      "canonical": "MSBuild",
+      "aliases": [
+        "msbuild"
+      ],
+      "category": "other",
+      "frequency": 5973
+    },
+    "terraform": {
+      "canonical": "Terraform",
+      "aliases": [
+        "terraform"
+      ],
+      "category": "other",
+      "frequency": 5754
+    },
+    "apt": {
+      "canonical": "APT",
+      "aliases": [
+        "apt"
+      ],
+      "category": "other",
+      "frequency": 5669
+    },
+    "pnpm": {
+      "canonical": "pnpm",
+      "aliases": [
+        "pnpm"
+      ],
+      "category": "other",
+      "frequency": 4836
+    },
+    "composer": {
+      "canonical": "Composer",
+      "aliases": [
+        "composer"
+      ],
+      "category": "other",
+      "frequency": 4767
+    },
+    "chocolatey": {
+      "canonical": "Chocolatey",
+      "aliases": [
+        "chocolatey"
+      ],
+      "category": "other",
+      "frequency": 4746
+    },
+    "ansible": {
+      "canonical": "Ansible",
+      "aliases": [
+        "ansible"
+      ],
+      "category": "other",
+      "frequency": 4272
+    },
+    "pacman": {
+      "canonical": "Pacman",
+      "aliases": [
+        "pacman"
+      ],
+      "category": "other",
+      "frequency": 3702
+    },
+    "unity_3d": {
+      "canonical": "Unity 3D",
+      "aliases": [
+        "unity 3d"
+      ],
+      "category": "other",
+      "frequency": 3179
+    },
+    "podman": {
+      "canonical": "Podman",
+      "aliases": [
+        "podman"
+      ],
+      "category": "other",
+      "frequency": 2682
+    },
+    "godot": {
+      "canonical": "Godot",
+      "aliases": [
+        "godot"
+      ],
+      "category": "other",
+      "frequency": 2363
+    },
+    "ninja": {
+      "canonical": "Ninja",
+      "aliases": [
+        "ninja"
+      ],
+      "category": "other",
+      "frequency": 2212
+    },
+    "bun": {
+      "canonical": "Bun",
+      "aliases": [
+        "bun"
+      ],
+      "category": "other",
+      "frequency": 2050
+    },
+    "google_test": {
+      "canonical": "Google Test",
+      "aliases": [
+        "google test"
+      ],
+      "category": "other",
+      "frequency": 1678
+    },
+    "unreal_engine": {
+      "canonical": "Unreal Engine",
+      "aliases": [
+        "unreal engine"
+      ],
+      "category": "other",
+      "frequency": 1639
+    },
+    "ant": {
+      "canonical": "Ant",
+      "aliases": [
+        "ant"
+      ],
+      "category": "other",
+      "frequency": 1539
+    },
+    "nix": {
+      "canonical": "Nix",
+      "aliases": [
+        "nix"
+      ],
+      "category": "other",
+      "frequency": 1450
+    },
+    "dagger": {
+      "canonical": "Dagger",
+      "aliases": [
+        "dagger"
+      ],
+      "category": "other",
+      "frequency": 635
+    },
+    "puppet": {
+      "canonical": "Puppet",
+      "aliases": [
+        "puppet"
+      ],
+      "category": "other",
+      "frequency": 629
+    },
+    "pulumi": {
+      "canonical": "Pulumi",
+      "aliases": [
+        "pulumi"
+      ],
+      "category": "other",
+      "frequency": 495
+    },
+    "chef": {
+      "canonical": "Chef",
+      "aliases": [
+        "chef"
+      ],
+      "category": "other",
+      "frequency": 399
+    }
+  },
+  "platforms": {},
+  "other": {}
+}

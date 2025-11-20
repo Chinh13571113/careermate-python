@@ -1,0 +1,370 @@
+{
+  "personal_info": {
+    "full_name": "John Doe",
+    "email": "john.doe@example.com",
+    "location": "San Francisco, CA",
+    "github": "github.com/johndoe"
+  },
+  "skills": [
+    {
+      "name": "Vue.js",
+      "canonical_name": "Vue.js",
+      "category": "frameworks",
+      "proficiency": null,
+      "confidence": 0.95,
+      "source_sentence": "",
+      "extraction_method": "vocabulary"
+    },
+    {
+      "name": "Node.js",
+      "canonical_name": "Node.js",
+      "category": "frameworks",
+      "proficiency": null,
+      "confidence": 0.95,
+      "source_sentence": "",
+      "extraction_method": "vocabulary"
+    },
+    {
+      "name": "Flask",
+      "canonical_name": "Flask",
+      "category": "frameworks",
+      "proficiency": "expert",
+      "confidence": 0.9,
+      "source_sentence": "Expert in Python, Django, Flask",
+      "extraction_method": "vocabulary"
+    },
+    {
+      "name": "JavaScript",
+      "canonical_name": "JavaScript",
+      "category": "languages",
+      "proficiency": "proficient",
+      "confidence": 0.85,
+      "source_sentence": "I'm proficient in JavaScript, React, and Node",
+      "extraction_method": "vocabulary"
+    },
+    {
+      "name": "Java",
+      "canonical_name": "Java",
+      "category": "languages",
+      "proficiency": "proficient",
+      "confidence": 0.85,
+      "source_sentence": "I'm proficient in JavaScript, React, and Node",
+      "extraction_method": "vocabulary"
+    },
+    {
+      "name": "React",
+      "canonical_name": "React",
+      "category": "frameworks",
+      "proficiency": "proficient",
+      "confidence": 0.85,
+      "source_sentence": "I'm proficient in JavaScript, React, and Node",
+      "extraction_method": "vocabulary"
+    },
+    {
+      "name": "Rust",
+      "canonical_name": "Rust",
+      "category": "languages",
+      "proficiency": "familiar",
+      "confidence": 0.8,
+      "source_sentence": "Familiar with Go, Rust",
+      "extraction_method": "vocabulary"
+    },
+    {
+      "name": "Python",
+      "canonical_name": "Python",
+      "category": "languages",
+      "proficiency": "proficient",
+      "confidence": 0.725,
+      "source_sentence": "I have been working with Python and Django for the past 4 years, building scalable backend systems",
+      "extraction_method": "vocabulary"
+    },
+    {
+      "name": "TypeScript",
+      "canonical_name": "TypeScript",
+      "category": "languages",
+      "proficiency": "proficient",
+      "confidence": 0.725,
+      "source_sentence": "js, TypeScript",
+      "extraction_method": "vocabulary"
+    },
+    {
+      "name": "C",
+      "canonical_name": "C",
+      "category": "languages",
+      "proficiency": "proficient",
+      "confidence": 0.725,
+      "source_sentence": "I am a Full-stack Developer with 5 years of professional experience in web development",
+      "extraction_method": "vocabulary"
+    },
+    {
+      "name": "Go",
+      "canonical_name": "Go",
+      "category": "languages",
+      "proficiency": "proficient",
+      "confidence": 0.725,
+      "source_sentence": "I have been working with Python and Django for the past 4 years, building scalable backend systems",
+      "extraction_method": "vocabulary"
+    },
+    {
+      "name": "SQL",
+      "canonical_name": "SQL",
+      "category": "languages",
+      "proficiency": "proficient",
+      "confidence": 0.725,
+      "source_sentence": "I have extensive experience with PostgreSQL and MongoDB databases",
+      "extraction_method": "vocabulary"
+    },
+    {
+      "name": "R",
+      "canonical_name": "R",
+      "category": "languages",
+      "proficiency": "proficient",
+      "confidence": 0.725,
+      "source_sentence": "I am a Full-stack Developer with 5 years of professional experience in web development",
+      "extraction_method": "vocabulary"
+    },
+    {
+      "name": "Scala",
+      "canonical_name": "Scala",
+      "category": "languages",
+      "proficiency": "proficient",
+      "confidence": 0.725,
+      "source_sentence": "I have been working with Python and Django for the past 4 years, building scalable backend systems",
+      "extraction_method": "vocabulary"
+    },
+    {
+      "name": "Django",
+      "canonical_name": "Django",
+      "category": "frameworks",
+      "proficiency": "proficient",
+      "confidence": 0.725,
+      "source_sentence": "I have been working with Python and Django for the past 4 years, building scalable backend systems",
+      "extraction_method": "vocabulary"
+    },
+    {
+      "name": "PostgreSQL",
+      "canonical_name": "PostgreSQL",
+      "category": "databases",
+      "proficiency": "proficient",
+      "confidence": 0.725,
+      "source_sentence": "I have extensive experience with PostgreSQL and MongoDB databases",
+      "extraction_method": "vocabulary"
+    },
+    {
+      "name": "MySQL",
+      "canonical_name": "MySQL",
+      "category": "databases",
+      "proficiency": "proficient",
+      "confidence": 0.725,
+      "source_sentence": "Databases: PostgreSQL, MySQL, Redis, MongoDB",
+      "extraction_method": "vocabulary"
+    },
+    {
+      "name": "MongoDB",
+      "canonical_name": "MongoDB",
+      "category": "databases",
+      "proficiency": "proficient",
+      "confidence": 0.725,
+      "source_sentence": "I have extensive experience with PostgreSQL and MongoDB databases",
+      "extraction_method": "vocabulary"
+    },
+    {
+      "name": "Redis",
+      "canonical_name": "Redis",
+      "category": "databases",
+      "proficiency": "proficient",
+      "confidence": 0.725,
+      "source_sentence": "Databases: PostgreSQL, MySQL, Redis, MongoDB",
+      "extraction_method": "vocabulary"
+    },
+    {
+      "name": "AWS",
+      "canonical_name": "AWS",
+      "category": "tools",
+      "proficiency": "proficient",
+      "confidence": 0.725,
+      "source_sentence": "- AWS Certified Solutions Architect",
+      "extraction_method": "vocabulary"
+    },
+    {
+      "name": "Azure",
+      "canonical_name": "Azure",
+      "category": "tools",
+      "proficiency": "proficient",
+      "confidence": 0.725,
+      "source_sentence": "Cloud: AWS, Azure, Google Cloud Platform",
+      "extraction_method": "vocabulary"
+    },
+    {
+      "name": "Google Cloud",
+      "canonical_name": "Google Cloud",
+      "category": "tools",
+      "proficiency": "proficient",
+      "confidence": 0.725,
+      "source_sentence": "Cloud: AWS, Azure, Google Cloud Platform",
+      "extraction_method": "vocabulary"
+    },
+    {
+      "name": "Docker",
+      "canonical_name": "Docker",
+      "category": "tools",
+      "proficiency": "proficient",
+      "confidence": 0.725,
+      "source_sentence": "Led a team of 3 developers to architect and implement microservices using Docker and Kubernetes",
+      "extraction_method": "vocabulary"
+    },
+    {
+      "name": "Kubernetes",
+      "canonical_name": "Kubernetes",
+      "category": "tools",
+      "proficiency": "proficient",
+      "confidence": 0.725,
+      "source_sentence": "Led a team of 3 developers to architect and implement microservices using Docker and Kubernetes",
+      "extraction_method": "vocabulary"
+    },
+    {
+      "name": "Jenkins",
+      "canonical_name": "Jenkins",
+      "category": "tools",
+      "proficiency": "proficient",
+      "confidence": 0.725,
+      "source_sentence": "DevOps: Docker, Kubernetes, Jenkins, Terraform",
+      "extraction_method": "vocabulary"
+    },
+    {
+      "name": "Terraform",
+      "canonical_name": "Terraform",
+      "category": "tools",
+      "proficiency": "proficient",
+      "confidence": 0.725,
+      "source_sentence": "DevOps: Docker, Kubernetes, Jenkins, Terraform",
+      "extraction_method": "vocabulary"
+    },
+    {
+      "name": "rn",
+      "canonical_name": "React Native",
+      "category": "frameworks",
+      "proficiency": "proficient",
+      "confidence": 0.7,
+      "source_sentence": "Led a team of 3 developers to architect and implement microservices using Docker and Kubernetes",
+      "extraction_method": "vocabulary_alias"
+    },
+    {
+      "name": "tf",
+      "canonical_name": "TensorFlow",
+      "category": "frameworks",
+      "proficiency": "proficient",
+      "confidence": 0.7,
+      "source_sentence": "Cloud: AWS, Azure, Google Cloud Platform",
+      "extraction_method": "vocabulary_alias"
+    },
+    {
+      "name": "es",
+      "canonical_name": "Elasticsearch",
+      "category": "databases",
+      "proficiency": "proficient",
+      "confidence": 0.7,
+      "source_sentence": "I am a Full-stack Developer with 5 years of professional experience in web development",
+      "extraction_method": "vocabulary_alias"
+    }
+  ],
+  "experience": null,
+  "education": [
+    {
+      "degree_type": "Bachelor's",
+      "field_of_study": "Computer Science",
+      "institution": "Stanford University",
+      "graduation_year": 2018,
+      "confidence": 0.85,
+      "source_text": "Bachelor's degree in Computer Science from Stanford University, graduated 2018"
+    }
+  ],
+  "certifications": [
+    {
+      "name": "aws certified solutions architect",
+      "canonical_name": "AWS Certified Solutions Architect",
+      "issuing_organization": "AWS",
+      "issue_date": null,
+      "confidence": 0.9,
+      "source_text": "- AWS Certified Solutions Architect"
+    },
+    {
+      "name": "cka",
+      "canonical_name": "Certified Kubernetes Administrator",
+      "issuing_organization": "Certified",
+      "issue_date": null,
+      "confidence": 0.9,
+      "source_text": "- Certified Kubernetes Administrator (CKA)"
+    }
+  ],
+  "job_roles": [
+    {
+      "original_title": "Full-stack Developer",
+      "canonical_role": "Full-stack Developer",
+      "confidence": 0.9,
+      "source_text": "I am a Full-stack Developer with 5 years of professional experience in web development"
+    },
+    {
+      "original_title": "to architect",
+      "canonical_role": "Software Architect",
+      "confidence": 0.9,
+      "source_text": "Led a team of 3 developers to architect and implement microservices using Docker and Kubernetes"
+    },
+    {
+      "original_title": "backend",
+      "canonical_role": "Backend Developer",
+      "confidence": 0.75,
+      "source_text": "    I have been working with Python and Django for the past 4 years, building scalable backend systems"
+    },
+    {
+      "original_title": "frontend",
+      "canonical_role": "Frontend Developer",
+      "confidence": 0.75,
+      "source_text": "js for frontend and API development"
+    },
+    {
+      "original_title": "devops",
+      "canonical_role": "DevOps Engineer",
+      "confidence": 0.75,
+      "source_text": "    DevOps: Docker, Kubernetes, Jenkins, Terraform"
+    },
+    {
+      "original_title": "pm",
+      "canonical_role": "Product Manager",
+      "confidence": 0.75,
+      "source_text": "    I am a Full-stack Developer with 5 years of professional experience in web development"
+    }
+  ],
+  "raw_text": "\n    I am a Full-stack Developer with 5 years of professional experience in web development.\n    \n    EXPERIENCE:\n    I have been working with Python and Django for the past 4 years, building scalable backend systems.\n    I'm proficient in JavaScript, React, and Node.js for frontend and API development.\n    I have extensive experience with PostgreSQL and MongoDB databases.\n    Led a team of 3 developers to architect and implement microservices using Docker and Kubernetes.\n    \n    EDUCATION:\n    Bachelor's degree in Computer Science from Stanford University, graduated 2018.\n    \n    CERTIFICATIONS:\n    - AWS Certified Solutions Architect\n    - Certified Kubernetes Administrator (CKA)\n    \n    SKILLS:\n    Expert in Python, Django, Flask\n    Proficient in React, Vue.js, TypeScript\n    Familiar with Go, Rust\n    DevOps: Docker, Kubernetes, Jenkins, Terraform\n    Databases: PostgreSQL, MySQL, Redis, MongoDB\n    Cloud: AWS, Azure, Google Cloud Platform\n    ",
+  "confidence_scores": {
+    "skills": 0.7594827586206896,
+    "experience": 0.0,
+    "education": 0.85,
+    "certifications": 0.9,
+    "roles": 0.7999999999999999,
+    "overall": 0.6008189655172413
+  },
+  "ambiguous_items": [
+    {
+      "field": "roles",
+      "extracted_value": "Full-stack Developer",
+      "alternatives": [
+        "Software Architect",
+        "Backend Developer",
+        "Frontend Developer"
+      ],
+      "confidence": 0.9,
+      "reason": "Multiple potential roles detected"
+    }
+  ],
+  "summary": {
+    "total_skills": 29,
+    "high_confidence_skills": 7,
+    "years_experience": 0,
+    "education_level": "Bachelor's",
+    "total_certifications": 2,
+    "primary_role": "Full-stack Developer",
+    "overall_confidence": 0.6008189655172413,
+    "needs_review": true
+  }
+}

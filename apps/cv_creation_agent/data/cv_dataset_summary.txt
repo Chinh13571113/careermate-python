@@ -1,0 +1,16 @@
+STACK OVERFLOW CV TRAINING DATASET SUMMARY
+==================================================
+
+Created: 2025-10-15 16:31:55
+Source: survey_results_public_fix.csv (65,437 × 114)
+Export: stackoverflow_cv_training_dataset.csv (65,437 × 36)
+Size: 59.41 MB
+Reduction: 68.4% fewer columns
+
+PURPOSE: CV/Resume creation system training
+FOCUS: Developer profiles, skills, experience, education
+
+USAGE:
+1. Load with: df = pd.read_csv('data/stackoverflow_cv_training_dataset.csv')
+2. Use for machine learning model training
+3. Focus on high-completeness columns for best results

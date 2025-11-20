@@ -14,7 +14,7 @@ SPRING_BOOT_JWT_SECRET = os.environ["SPRING_BOOT_JWT_SECRET"]
 
 SECRET_KEY = 'django-insecure-your-secret-key'
 DEBUG = True
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*", "192.168.1.5"]
 
 INSTALLED_APPS = [
     # 'django.contrib.admin',

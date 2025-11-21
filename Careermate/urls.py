@@ -10,5 +10,6 @@ urlpatterns = [
     path('swagger/api/docs/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
     path('api/v1/cv/', include('apps.cv_analysis_agent.urls')),
     path('api/v1/jobs/', include('apps.recommendation_agent.urls')),
+    path('api/cv-creation/', include('apps.cv_creation_agent.urls')),
     path('api/test/', TestView.as_view(), name='test'),
 ]

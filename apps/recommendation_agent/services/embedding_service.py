@@ -4,12 +4,12 @@ Embedding Service - Handles text embedding generation using Gemini API
 import os
 import numpy as np
 from dotenv import load_dotenv
-from google import genai
+import google.generativeai as genai
 
 load_dotenv()
 
-# Initialize Gemini client
-gemini_client = genai.Client(api_key=os.getenv("GOOGLE_API_KEY"))
+# Initialize Gemini API
+genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
 
 
 def get_gemini_embedding(text: str):
@@ -26,12 +26,12 @@ def get_gemini_embedding(text: str):
     if not text:
         return None
 
-    response = gemini_client.models.embed_content(
+    response = genai.embed_content(
         model="models/text-embedding-004",
-        contents=text
+        content=text
     )
 
-    return np.array(response.embeddings[0].values, dtype=np.float32).tolist()
+    return np.array(response['embedding'], dtype=np.float32).tolist()
 
 
 def combine_weighted_text(query_item: dict, weights: dict = None) -> str:

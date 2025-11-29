@@ -88,6 +88,60 @@ def _cache_set(key: str, result: dict):
     os.replace(tmp, path)
 
 
+def try_get_cached_result(cv_file, job_description: str):
+    """
+    Try to get cached result without calling AI API.
+    Returns cached result if found, None otherwise.
+    """
+    try:
+        # Extract and normalize CV text
+        cv_text = extract_text.extract_text(cv_file)
+        cv_summary = cv_text[:2000]
+        jd_summary = job_description[:1500]
+
+        # Build same cache key as analyze_cv_vs_jd
+        model_config = {
+            "model": os.getenv("OPENAI_MODEL", "gpt-4o-mini"),
+            "temperature": 0.5,
+            "top_p": 0.9,
+        }
+
+        prompt = f"""Analyze CV vs Job. Score 0-100. Return ONLY valid JSON.
+
+{{
+  "summary": {{"overall_match": <int>, "overview_comment": "<text>", "strengths": ["item1", "item2", "item3"], "improvements": ["item1", "item2", "item3"]}},
+  "content": {{"score": <int>, "measurable_results": ["item1", "item2"], "grammar_issues": ["item1", "item2"], "tips": ["item1", "item2"]}},
+  "skills": {{"score": <int>, "technical": {{"matched": ["skill1", "skill2", "skill3"], "missing": ["skill1", "skill2", "skill3"]}}, "soft": {{"missing": ["skill1", "skill2"]}}, "tips": ["item1", "item2"]}},
+  "format": {{"score": <int>, "checks": {{"date_format": "PASS|FAIL", "length": "PASS|FAIL", "bullet_points": "PASS|FAIL"}}, "tips": ["item1", "item2"]}},
+  "sections": {{"score": <int>, "missing": ["section1", "section2"], "tips": ["item1", "item2"]}},
+  "style": {{"score": <int>, "tone": ["issue1", "issue2"], "buzzwords": ["word1", "word2"], "tips": ["item1", "item2"]}},
+  "recommendations": {{"items": ["rec1", "rec2", "rec3"]}},
+  "overall_score": <int>,
+  "overall_comment": "<text max 50 words>"
+}}
+
+RESUME:
+{cv_summary}
+
+JOB DESCRIPTION:
+{jd_summary}
+
+Analyze and return complete JSON:"""
+
+        key_basis = json.dumps({
+            "version": CACHE_VERSION,
+            "prompt": prompt,
+            "config": model_config,
+        }, ensure_ascii=False)
+        key = hashlib.sha256(key_basis.encode("utf-8")).hexdigest()
+
+        # Try to get from cache
+        return _cache_get(key)
+    except Exception as e:
+        print(f"⚠️ Cache check error: {e}")
+        return None
+
+
 def analyze_cv_vs_jd(cv_file, job_description: str, force_refresh: bool = False):
     """
     AI-powered CV + JD analysis (Cake.me style)

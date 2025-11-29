@@ -47,8 +47,32 @@ class ResumeAtsAnalyzeView(APIView):
         return user_id, plan
 
     def post(self, request):
-        # Enforce rate limit BEFORE heavy work
         user_id, plan = self._get_user_identity_and_plan(request)
+
+        # Check if force_refresh is requested (bypass cache)
+        force_refresh = request.data.get('force_refresh', 'false').lower() == 'true'
+
+        # Parse request early to check cache BEFORE rate limiting
+        s = ResumeAnalysisSerializer(data=request.data)
+        s.is_valid(raise_exception=True)
+        jd = s.validated_data.get("job_description", "")
+        cv = s.validated_data["cv_file"]
+
+        # Try cache first (if not force_refresh) - doesn't count against rate limit
+        if not force_refresh:
+            cached_result = ai_checker_resume_service.try_get_cached_result(cv, jd)
+            if cached_result:
+                # Cache HIT - return immediately without consuming rate limit
+                cached_result.setdefault("rate_limit", {}).update({
+                    "plan": plan,
+                    "user": user_id,
+                    "cached": True,
+                    "quota_used": False,
+                    "tip": "This result was served from cache and did not consume your quota."
+                })
+                return Response(cached_result)
+
+        # Cache MISS or force_refresh - enforce rate limit
         allowed, info = enforce_rate_limit(user_id=user_id, plan=plan)
         if not allowed:
             return Response({
@@ -57,18 +81,18 @@ class ResumeAtsAnalyzeView(APIView):
                 "retry_after": info.get("retry_after"),
                 "plan": plan,
                 "user": user_id,
+                "tip": "If you're analyzing the same CV and job description, the cached result will be returned instantly without consuming your quota."
             }, status=status.HTTP_429_TOO_MANY_REQUESTS)
 
-        s = ResumeAnalysisSerializer(data=request.data)
-        s.is_valid(raise_exception=True)
-        jd = s.validated_data.get("job_description", "")
-        cv = s.validated_data["cv_file"]
+        # Pass force_refresh to service
+        result = ai_checker_resume_service.analyze_cv_vs_jd(cv, jd, force_refresh=force_refresh)
 
-        result = ai_checker_resume_service.analyze_cv_vs_jd(cv, jd)
         # Attach rate-limit meta for transparency
         result.setdefault("rate_limit", {}).update({
             "plan": plan,
             "user": user_id,
+            "cached": False,
+            "quota_used": True,
             **({k: v for k, v in info.items() if k in ("remaining_today", "interval_lock")}),
         })
         return Response(result)

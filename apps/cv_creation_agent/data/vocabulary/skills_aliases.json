@@ -1,0 +1,930 @@
+{
+  "python": {
+    "canonical": "Python",
+    "type": "language"
+  },
+  "py": {
+    "canonical": "Python",
+    "type": "language"
+  },
+  "python3": {
+    "canonical": "Python",
+    "type": "language"
+  },
+  "python2": {
+    "canonical": "Python",
+    "type": "language"
+  },
+  "python3.x": {
+    "canonical": "Python",
+    "type": "language"
+  },
+  "javascript": {
+    "canonical": "JavaScript",
+    "type": "language"
+  },
+  "js": {
+    "canonical": "JavaScript",
+    "type": "language"
+  },
+  "ecmascript": {
+    "canonical": "JavaScript",
+    "type": "language"
+  },
+  "es6": {
+    "canonical": "JavaScript",
+    "type": "language"
+  },
+  "es2015": {
+    "canonical": "JavaScript",
+    "type": "language"
+  },
+  "typescript": {
+    "canonical": "TypeScript",
+    "type": "language"
+  },
+  "ts": {
+    "canonical": "TypeScript",
+    "type": "language"
+  },
+  "java": {
+    "canonical": "Java",
+    "type": "language"
+  },
+  "c#": {
+    "canonical": "C#",
+    "type": "language"
+  },
+  "csharp": {
+    "canonical": "C#",
+    "type": "language"
+  },
+  "c sharp": {
+    "canonical": "C#",
+    "type": "language"
+  },
+  "cs": {
+    "canonical": "C#",
+    "type": "language"
+  },
+  "c++": {
+    "canonical": "C++",
+    "type": "language"
+  },
+  "cpp": {
+    "canonical": "C++",
+    "type": "language"
+  },
+  "c plus plus": {
+    "canonical": "C++",
+    "type": "language"
+  },
+  "c": {
+    "canonical": "C",
+    "type": "language"
+  },
+  "c lang": {
+    "canonical": "C",
+    "type": "language"
+  },
+  "go": {
+    "canonical": "Go",
+    "type": "language"
+  },
+  "golang": {
+    "canonical": "Go",
+    "type": "language"
+  },
+  "go lang": {
+    "canonical": "Go",
+    "type": "language"
+  },
+  "rust": {
+    "canonical": "Rust",
+    "type": "language"
+  },
+  "rust lang": {
+    "canonical": "Rust",
+    "type": "language"
+  },
+  "ruby": {
+    "canonical": "Ruby",
+    "type": "language"
+  },
+  "rb": {
+    "canonical": "Ruby",
+    "type": "language"
+  },
+  "php": {
+    "canonical": "PHP",
+    "type": "language"
+  },
+  "swift": {
+    "canonical": "Swift",
+    "type": "language"
+  },
+  "kotlin": {
+    "canonical": "Kotlin",
+    "type": "language"
+  },
+  "sql": {
+    "canonical": "SQL",
+    "type": "language"
+  },
+  "structured query language": {
+    "canonical": "SQL",
+    "type": "language"
+  },
+  "r": {
+    "canonical": "R",
+    "type": "language"
+  },
+  "r lang": {
+    "canonical": "R",
+    "type": "language"
+  },
+  "r language": {
+    "canonical": "R",
+    "type": "language"
+  },
+  "matlab": {
+    "canonical": "MATLAB",
+    "type": "language"
+  },
+  "scala": {
+    "canonical": "Scala",
+    "type": "language"
+  },
+  "dart": {
+    "canonical": "Dart",
+    "type": "language"
+  },
+  "html/css": {
+    "canonical": "HTML/CSS",
+    "type": "language"
+  },
+  "html": {
+    "canonical": "HTML/CSS",
+    "type": "language"
+  },
+  "css": {
+    "canonical": "HTML/CSS",
+    "type": "language"
+  },
+  "html5": {
+    "canonical": "HTML/CSS",
+    "type": "language"
+  },
+  "css3": {
+    "canonical": "HTML/CSS",
+    "type": "language"
+  },
+  "bash/shell": {
+    "canonical": "Bash/Shell",
+    "type": "language"
+  },
+  "bash": {
+    "canonical": "Bash/Shell",
+    "type": "language"
+  },
+  "shell": {
+    "canonical": "Bash/Shell",
+    "type": "language"
+  },
+  "sh": {
+    "canonical": "Bash/Shell",
+    "type": "language"
+  },
+  "zsh": {
+    "canonical": "Bash/Shell",
+    "type": "language"
+  },
+  "bash/shell (all shells)": {
+    "canonical": "Bash/Shell (all shells)",
+    "type": "language"
+  },
+  "powershell": {
+    "canonical": "PowerShell",
+    "type": "language"
+  },
+  "lua": {
+    "canonical": "Lua",
+    "type": "language"
+  },
+  "assembly": {
+    "canonical": "Assembly",
+    "type": "language"
+  },
+  "visual basic (.net)": {
+    "canonical": "Visual Basic (.Net)",
+    "type": "language"
+  },
+  "vba": {
+    "canonical": "VBA",
+    "type": "language"
+  },
+  "groovy": {
+    "canonical": "Groovy",
+    "type": "language"
+  },
+  "perl": {
+    "canonical": "Perl",
+    "type": "language"
+  },
+  "gdscript": {
+    "canonical": "GDScript",
+    "type": "language"
+  },
+  "objective-c": {
+    "canonical": "Objective-C",
+    "type": "language"
+  },
+  "elixir": {
+    "canonical": "Elixir",
+    "type": "language"
+  },
+  "haskell": {
+    "canonical": "Haskell",
+    "type": "language"
+  },
+  "delphi": {
+    "canonical": "Delphi",
+    "type": "language"
+  },
+  "micropython": {
+    "canonical": "MicroPython",
+    "type": "language"
+  },
+  "lisp": {
+    "canonical": "Lisp",
+    "type": "language"
+  },
+  "clojure": {
+    "canonical": "Clojure",
+    "type": "language"
+  },
+  "julia": {
+    "canonical": "Julia",
+    "type": "language"
+  },
+  "zig": {
+    "canonical": "Zig",
+    "type": "language"
+  },
+  "fortran": {
+    "canonical": "Fortran",
+    "type": "language"
+  },
+  "solidity": {
+    "canonical": "Solidity",
+    "type": "language"
+  },
+  "ada": {
+    "canonical": "Ada",
+    "type": "language"
+  },
+  "erlang": {
+    "canonical": "Erlang",
+    "type": "language"
+  },
+  "f#": {
+    "canonical": "F#",
+    "type": "language"
+  },
+  "apex": {
+    "canonical": "Apex",
+    "type": "language"
+  },
+  "prolog": {
+    "canonical": "Prolog",
+    "type": "language"
+  },
+  "ocaml": {
+    "canonical": "OCaml",
+    "type": "language"
+  },
+  "cobol": {
+    "canonical": "Cobol",
+    "type": "language"
+  },
+  "crystal": {
+    "canonical": "Crystal",
+    "type": "language"
+  },
+  "nim": {
+    "canonical": "Nim",
+    "type": "language"
+  },
+  "zephyr": {
+    "canonical": "Zephyr",
+    "type": "language"
+  },
+  "react": {
+    "canonical": "React",
+    "type": "framework"
+  },
+  "reactjs": {
+    "canonical": "React",
+    "type": "framework"
+  },
+  "react.js": {
+    "canonical": "React",
+    "type": "framework"
+  },
+  "angular": {
+    "canonical": "Angular",
+    "type": "framework"
+  },
+  "angularjs": {
+    "canonical": "Angular",
+    "type": "framework"
+  },
+  "angular.js": {
+    "canonical": "Angular",
+    "type": "framework"
+  },
+  "vue.js": {
+    "canonical": "Vue.js",
+    "type": "framework"
+  },
+  "vue": {
+    "canonical": "Vue.js",
+    "type": "framework"
+  },
+  "vuejs": {
+    "canonical": "Vue.js",
+    "type": "framework"
+  },
+  "django": {
+    "canonical": "Django",
+    "type": "framework"
+  },
+  "flask": {
+    "canonical": "Flask",
+    "type": "framework"
+  },
+  "fastapi": {
+    "canonical": "FastAPI",
+    "type": "framework"
+  },
+  "spring": {
+    "canonical": "Spring",
+    "type": "framework"
+  },
+  "spring boot": {
+    "canonical": "Spring",
+    "type": "framework"
+  },
+  "spring framework": {
+    "canonical": "Spring",
+    "type": "framework"
+  },
+  "express.js": {
+    "canonical": "Express.js",
+    "type": "framework"
+  },
+  "express": {
+    "canonical": "Express.js",
+    "type": "framework"
+  },
+  "expressjs": {
+    "canonical": "Express.js",
+    "type": "framework"
+  },
+  "node.js": {
+    "canonical": "Node.js",
+    "type": "framework"
+  },
+  "node": {
+    "canonical": "Node.js",
+    "type": "framework"
+  },
+  "nodejs": {
+    "canonical": "Node.js",
+    "type": "framework"
+  },
+  ".net": {
+    "canonical": ".NET",
+    "type": "framework"
+  },
+  "dotnet": {
+    "canonical": ".NET",
+    "type": "framework"
+  },
+  "asp.net": {
+    "canonical": ".NET",
+    "type": "framework"
+  },
+  "aspnet": {
+    "canonical": ".NET",
+    "type": "framework"
+  },
+  "laravel": {
+    "canonical": "Laravel",
+    "type": "framework"
+  },
+  "ruby on rails": {
+    "canonical": "Ruby on Rails",
+    "type": "framework"
+  },
+  "rails": {
+    "canonical": "Ruby on Rails",
+    "type": "framework"
+  },
+  "ror": {
+    "canonical": "Ruby on Rails",
+    "type": "framework"
+  },
+  "react native": {
+    "canonical": "React Native",
+    "type": "framework"
+  },
+  "react-native": {
+    "canonical": "React Native",
+    "type": "framework"
+  },
+  "rn": {
+    "canonical": "React Native",
+    "type": "framework"
+  },
+  "flutter": {
+    "canonical": "Flutter",
+    "type": "framework"
+  },
+  "swiftui": {
+    "canonical": "SwiftUI",
+    "type": "framework"
+  },
+  "tensorflow": {
+    "canonical": "TensorFlow",
+    "type": "framework"
+  },
+  "tf": {
+    "canonical": "TensorFlow",
+    "type": "framework"
+  },
+  "pytorch": {
+    "canonical": "PyTorch",
+    "type": "framework"
+  },
+  "torch": {
+    "canonical": "PyTorch",
+    "type": "framework"
+  },
+  "scikit-learn": {
+    "canonical": "scikit-learn",
+    "type": "framework"
+  },
+  "sklearn": {
+    "canonical": "scikit-learn",
+    "type": "framework"
+  },
+  "scikit learn": {
+    "canonical": "scikit-learn",
+    "type": "framework"
+  },
+  "pandas": {
+    "canonical": "Pandas",
+    "type": "framework"
+  },
+  "numpy": {
+    "canonical": "NumPy",
+    "type": "framework"
+  },
+  "keras": {
+    "canonical": "Keras",
+    "type": "framework"
+  },
+  "postgresql": {
+    "canonical": "PostgreSQL",
+    "type": "database"
+  },
+  "postgres": {
+    "canonical": "PostgreSQL",
+    "type": "database"
+  },
+  "psql": {
+    "canonical": "PostgreSQL",
+    "type": "database"
+  },
+  "mysql": {
+    "canonical": "MySQL",
+    "type": "database"
+  },
+  "mongodb": {
+    "canonical": "MongoDB",
+    "type": "database"
+  },
+  "mongo": {
+    "canonical": "MongoDB",
+    "type": "database"
+  },
+  "redis": {
+    "canonical": "Redis",
+    "type": "database"
+  },
+  "sqlite": {
+    "canonical": "SQLite",
+    "type": "database"
+  },
+  "sqlite3": {
+    "canonical": "SQLite",
+    "type": "database"
+  },
+  "microsoft sql server": {
+    "canonical": "Microsoft SQL Server",
+    "type": "database"
+  },
+  "mssql": {
+    "canonical": "Microsoft SQL Server",
+    "type": "database"
+  },
+  "sql server": {
+    "canonical": "Microsoft SQL Server",
+    "type": "database"
+  },
+  "sqlserver": {
+    "canonical": "Microsoft SQL Server",
+    "type": "database"
+  },
+  "oracle": {
+    "canonical": "Oracle",
+    "type": "database"
+  },
+  "oracle db": {
+    "canonical": "Oracle",
+    "type": "database"
+  },
+  "oracledb": {
+    "canonical": "Oracle",
+    "type": "database"
+  },
+  "elasticsearch": {
+    "canonical": "Elasticsearch",
+    "type": "database"
+  },
+  "elastic": {
+    "canonical": "Elasticsearch",
+    "type": "database"
+  },
+  "es": {
+    "canonical": "Elasticsearch",
+    "type": "database"
+  },
+  "dynamodb": {
+    "canonical": "Dynamodb",
+    "type": "database"
+  },
+  "cassandra": {
+    "canonical": "Cassandra",
+    "type": "database"
+  },
+  "firebase": {
+    "canonical": "Firebase",
+    "type": "database"
+  },
+  "mariadb": {
+    "canonical": "MariaDB",
+    "type": "database"
+  },
+  "firebase realtime database": {
+    "canonical": "Firebase Realtime Database",
+    "type": "database"
+  },
+  "cloud firestore": {
+    "canonical": "Cloud Firestore",
+    "type": "database"
+  },
+  "bigquery": {
+    "canonical": "BigQuery",
+    "type": "database"
+  },
+  "microsoft access": {
+    "canonical": "Microsoft Access",
+    "type": "database"
+  },
+  "supabase": {
+    "canonical": "Supabase",
+    "type": "database"
+  },
+  "h2": {
+    "canonical": "H2",
+    "type": "database"
+  },
+  "cosmos db": {
+    "canonical": "Cosmos DB",
+    "type": "database"
+  },
+  "snowflake": {
+    "canonical": "Snowflake",
+    "type": "database"
+  },
+  "influxdb": {
+    "canonical": "InfluxDB",
+    "type": "database"
+  },
+  "databricks sql": {
+    "canonical": "Databricks SQL",
+    "type": "database"
+  },
+  "neo4j": {
+    "canonical": "Neo4J",
+    "type": "database"
+  },
+  "ibm db2": {
+    "canonical": "IBM DB2",
+    "type": "database"
+  },
+  "clickhouse": {
+    "canonical": "Clickhouse",
+    "type": "database"
+  },
+  "solr": {
+    "canonical": "Solr",
+    "type": "database"
+  },
+  "duckdb": {
+    "canonical": "DuckDB",
+    "type": "database"
+  },
+  "firebird": {
+    "canonical": "Firebird",
+    "type": "database"
+  },
+  "couch db": {
+    "canonical": "Couch DB",
+    "type": "database"
+  },
+  "cockroachdb": {
+    "canonical": "Cockroachdb",
+    "type": "database"
+  },
+  "couchbase": {
+    "canonical": "Couchbase",
+    "type": "database"
+  },
+  "git": {
+    "canonical": "Git",
+    "type": "tool"
+  },
+  "github": {
+    "canonical": "GitHub",
+    "type": "tool"
+  },
+  "gitlab": {
+    "canonical": "GitLab",
+    "type": "tool"
+  },
+  "bitbucket": {
+    "canonical": "Bitbucket",
+    "type": "tool"
+  },
+  "aws": {
+    "canonical": "AWS",
+    "type": "tool"
+  },
+  "amazon web services": {
+    "canonical": "AWS",
+    "type": "tool"
+  },
+  "amazon aws": {
+    "canonical": "AWS",
+    "type": "tool"
+  },
+  "azure": {
+    "canonical": "Azure",
+    "type": "tool"
+  },
+  "microsoft azure": {
+    "canonical": "Azure",
+    "type": "tool"
+  },
+  "ms azure": {
+    "canonical": "Azure",
+    "type": "tool"
+  },
+  "google cloud": {
+    "canonical": "Google Cloud",
+    "type": "tool"
+  },
+  "gcp": {
+    "canonical": "Google Cloud",
+    "type": "tool"
+  },
+  "google cloud platform": {
+    "canonical": "Google Cloud",
+    "type": "tool"
+  },
+  "docker": {
+    "canonical": "Docker",
+    "type": "tool"
+  },
+  "kubernetes": {
+    "canonical": "Kubernetes",
+    "type": "tool"
+  },
+  "k8s": {
+    "canonical": "Kubernetes",
+    "type": "tool"
+  },
+  "kube": {
+    "canonical": "Kubernetes",
+    "type": "tool"
+  },
+  "jenkins": {
+    "canonical": "Jenkins",
+    "type": "tool"
+  },
+  "github actions": {
+    "canonical": "GitHub Actions",
+    "type": "tool"
+  },
+  "gh actions": {
+    "canonical": "GitHub Actions",
+    "type": "tool"
+  },
+  "gitlab ci": {
+    "canonical": "GitLab CI",
+    "type": "tool"
+  },
+  "gitlab ci/cd": {
+    "canonical": "GitLab CI",
+    "type": "tool"
+  },
+  "jest": {
+    "canonical": "Jest",
+    "type": "tool"
+  },
+  "pytest": {
+    "canonical": "Pytest",
+    "type": "tool"
+  },
+  "py.test": {
+    "canonical": "Pytest",
+    "type": "tool"
+  },
+  "junit": {
+    "canonical": "JUnit",
+    "type": "tool"
+  },
+  "selenium": {
+    "canonical": "Selenium",
+    "type": "tool"
+  },
+  "visual studio code": {
+    "canonical": "Visual Studio Code",
+    "type": "tool"
+  },
+  "vscode": {
+    "canonical": "Visual Studio Code",
+    "type": "tool"
+  },
+  "vs code": {
+    "canonical": "Visual Studio Code",
+    "type": "tool"
+  },
+  "intellij idea": {
+    "canonical": "IntelliJ IDEA",
+    "type": "tool"
+  },
+  "intellij": {
+    "canonical": "IntelliJ IDEA",
+    "type": "tool"
+  },
+  "idea": {
+    "canonical": "IntelliJ IDEA",
+    "type": "tool"
+  },
+  "pycharm": {
+    "canonical": "PyCharm",
+    "type": "tool"
+  },
+  "npm": {
+    "canonical": "npm",
+    "type": "tool"
+  },
+  "pip": {
+    "canonical": "Pip",
+    "type": "tool"
+  },
+  "homebrew": {
+    "canonical": "Homebrew",
+    "type": "tool"
+  },
+  "make": {
+    "canonical": "Make",
+    "type": "tool"
+  },
+  "vite": {
+    "canonical": "Vite",
+    "type": "tool"
+  },
+  "yarn": {
+    "canonical": "Yarn",
+    "type": "tool"
+  },
+  "webpack": {
+    "canonical": "Webpack",
+    "type": "tool"
+  },
+  "nuget": {
+    "canonical": "NuGet",
+    "type": "tool"
+  },
+  "maven (build tool)": {
+    "canonical": "Maven (build tool)",
+    "type": "tool"
+  },
+  "visual studio solution": {
+    "canonical": "Visual Studio Solution",
+    "type": "tool"
+  },
+  "gradle": {
+    "canonical": "Gradle",
+    "type": "tool"
+  },
+  "msbuild": {
+    "canonical": "MSBuild",
+    "type": "tool"
+  },
+  "terraform": {
+    "canonical": "Terraform",
+    "type": "tool"
+  },
+  "apt": {
+    "canonical": "APT",
+    "type": "tool"
+  },
+  "pnpm": {
+    "canonical": "pnpm",
+    "type": "tool"
+  },
+  "composer": {
+    "canonical": "Composer",
+    "type": "tool"
+  },
+  "chocolatey": {
+    "canonical": "Chocolatey",
+    "type": "tool"
+  },
+  "ansible": {
+    "canonical": "Ansible",
+    "type": "tool"
+  },
+  "pacman": {
+    "canonical": "Pacman",
+    "type": "tool"
+  },
+  "unity 3d": {
+    "canonical": "Unity 3D",
+    "type": "tool"
+  },
+  "podman": {
+    "canonical": "Podman",
+    "type": "tool"
+  },
+  "godot": {
+    "canonical": "Godot",
+    "type": "tool"
+  },
+  "ninja": {
+    "canonical": "Ninja",
+    "type": "tool"
+  },
+  "bun": {
+    "canonical": "Bun",
+    "type": "tool"
+  },
+  "google test": {
+    "canonical": "Google Test",
+    "type": "tool"
+  },
+  "unreal engine": {
+    "canonical": "Unreal Engine",
+    "type": "tool"
+  },
+  "ant": {
+    "canonical": "Ant",
+    "type": "tool"
+  },
+  "nix": {
+    "canonical": "Nix",
+    "type": "tool"
+  },
+  "dagger": {
+    "canonical": "Dagger",
+    "type": "tool"
+  },
+  "puppet": {
+    "canonical": "Puppet",
+    "type": "tool"
+  },
+  "pulumi": {
+    "canonical": "Pulumi",
+    "type": "tool"
+  },
+  "chef": {
+    "canonical": "Chef",
+    "type": "tool"
+  }
+}

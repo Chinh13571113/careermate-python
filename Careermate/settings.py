@@ -1,6 +1,10 @@
 from pathlib import Path
 import os
+import warnings
 from dotenv import load_dotenv
+
+# Suppress Triton warnings about missing CUDA binaries (for CPU-only PyTorch usage)
+warnings.filterwarnings('ignore', message='Failed to find.*', module='triton.knobs')
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -10,7 +14,7 @@ SPRING_BOOT_JWT_SECRET = os.environ["SPRING_BOOT_JWT_SECRET"]
 
 SECRET_KEY = 'django-insecure-your-secret-key'
 DEBUG = True
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*", "192.168.1.5"]
 
 INSTALLED_APPS = [
     # 'django.contrib.admin',
@@ -20,12 +24,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'drf_yasg',
     'drf_spectacular',
+    'corsheaders',  # Add CORS headers support
     # Add your app
     'apps.roadmap_agent',
     'apps.recommendation_agent',
     'apps.cv_creation_agent',
+    'apps.cv_analysis_agent',
     'apps.swagger.apps.SwaggerConfig',
 ]
 
@@ -51,6 +56,7 @@ SPECTACULAR_SETTINGS = {
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',  # Add CORS middleware here (before CommonMiddleware)
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -80,10 +86,22 @@ WSGI_APPLICATION = 'Careermate.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('POSTGRES_DB', 'MyPostgresDB'),
+        'USER': os.environ.get('POSTGRES_USER', 'root'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', '123456'),
+        'HOST': os.environ.get('POSTGRES_HOST', 'postgres'),
+        'PORT': os.environ.get('POSTGRES_PORT', '5439'),
+    },
 }
+
+CELERY_BEAT_SCHEDULE = {
+    "retrain-cf-model-every-6h": {
+        "task": "apps.recommendations.tasks.train_cf_model_task",
+        "schedule": 21600.0,  # 6 giờ
+    },
+}
+
 
 AUTH_PASSWORD_VALIDATORS = []
 
@@ -94,3 +112,53 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Celery Configuration
+CELERY_BROKER_URL = os.environ.get('CELERY_BROKER_URL', 'redis://redis:6379/0')
+CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND', 'redis://redis:6379/0')
+CELERY_TASK_TRACK_STARTED = True
+CELERY_TASK_TIME_LIMIT = os.environ["CELERY_TASK_TIME_LIMIT"]  # 30 minutes
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+
+# CORS Configuration
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",  # React default port
+    "http://localhost:5173",  # Vite default port
+    "http://localhost:4200",  # Angular default port
+    "http://localhost:8080",  # Vue default port
+    "http://127.0.0.1:3000",
+    "http://127.0.0.1:5173",
+    "http://127.0.0.1:4200",
+    "http://127.0.0.1:8080",
+    "null",  # Allow file:// protocol for local HTML testing
+]
+
+# Allow credentials (cookies, authorization headers, etc.)
+CORS_ALLOW_CREDENTIALS = True
+
+# Allow all headers and methods for development
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+]
+
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
+
+# For production, you should also update ALLOWED_HOSTS
+# ALLOWED_HOSTS = ['yourdomain.com', 'www.yourdomain.com']

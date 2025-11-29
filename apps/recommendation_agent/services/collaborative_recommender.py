@@ -15,6 +15,9 @@ data_jp = pd.read_csv(csv_path, encoding='latin-1')
 FEEDBACK_WEIGHTS = {
     'apply': 1.0,   # Strongest signal
     'like': 0.7,    # Medium signal
+    'save': 0.5,    # Neutral signal
+    'view': 0.3,    # Weak signal
+    'dislike': 0.0  # Negative signal
 }
 
 
@@ -26,6 +29,10 @@ def _collaborative_filtering_sync(candidate_id: int, job_ids: list, n: int = 5):
     # 1. Build user-job interaction matrix
     interaction_data = _build_interaction_matrix()
     user_jobs, job_users, user_job_weights = interaction_data
+
+    # Debug: Print interaction matrix stats
+    print(f"  Total users with interactions: {len(user_jobs)}")
+    print(f"  Total jobs with interactions: {len(job_users)}")
 
     # 2. Get target user's interactions
     target_user_jobs = user_jobs.get(candidate_id, set())
@@ -75,17 +82,23 @@ def _build_interaction_matrix():
     job_users = defaultdict(dict)
     user_job_weights = defaultdict(dict)
 
+    print(f"  Processing {all_feedbacks.count()} feedback records...")
+
     for fb in all_feedbacks:
-        feedback_weight = FEEDBACK_WEIGHTS.get(fb.feedback_type, 0.5)
+        # Convert feedback_type to lowercase for case-insensitive matching
+        feedback_type_lower = fb.feedback_type.lower() if fb.feedback_type else ''
+        feedback_weight = FEEDBACK_WEIGHTS.get(feedback_type_lower, 0.5)
 
         if fb.score is not None and fb.score > 0:
             weighted_score = fb.score * feedback_weight
         else:
             weighted_score = feedback_weight
 
-        user_jobs[fb.candidate_id].add(fb.job_id)
-        job_users[fb.job_id][fb.candidate_id] = weighted_score
-        user_job_weights[fb.candidate_id][fb.job_id] = weighted_score
+        # Skip negative feedback (dislike) from building positive interactions
+        if feedback_weight > 0:
+            user_jobs[fb.candidate_id].add(fb.job_id)
+            job_users[fb.job_id][fb.candidate_id] = weighted_score
+            user_job_weights[fb.candidate_id][fb.job_id] = weighted_score
 
     return user_jobs, job_users, user_job_weights
 
@@ -189,4 +202,3 @@ def _format_cf_results(sorted_jobs):
 async def get_collaborative_filtering_recommendations(candidate_id: int, job_ids: list, model=None, n: int = 5):
     """Async wrapper for collaborative filtering"""
     return await sync_to_async(_collaborative_filtering_sync)(candidate_id, job_ids, n)
-

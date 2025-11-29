@@ -66,7 +66,16 @@ def extract_text(file):
     if filename.endswith(".pdf"):
         text = ""
         try:
+            # Reset file pointer to beginning before reading
+            if hasattr(file, 'seek'):
+                file.seek(0)
+
             pdf_bytes = file.read()
+
+            # Reset file pointer after reading so it can be read again if needed
+            if hasattr(file, 'seek'):
+                file.seek(0)
+
             with fitz.open(stream=io.BytesIO(pdf_bytes), filetype="pdf") as doc:
                 for page in doc:
                     page_text = page.get_text("text")
@@ -93,7 +102,16 @@ def extract_text(file):
     # ✅ Handle DOCX
     elif filename.endswith(".docx"):
         try:
+            # Reset file pointer to beginning before reading
+            if hasattr(file, 'seek'):
+                file.seek(0)
+
             text = docx2txt.process(file)
+
+            # Reset file pointer after reading
+            if hasattr(file, 'seek'):
+                file.seek(0)
+
             return remove_stopwords_tfidf(text)
         except Exception as e:
             raise ValueError(f"DOCX parsing failed: {e}")

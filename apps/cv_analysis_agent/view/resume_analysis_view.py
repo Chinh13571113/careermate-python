@@ -47,8 +47,21 @@ class ResumeAtsAnalyzeView(APIView):
         return user_id, plan
 
     def post(self, request):
-        # Enforce rate limit BEFORE heavy work
         user_id, plan = self._get_user_identity_and_plan(request)
+
+        # Check if force_refresh is requested (bypass cache)
+        force_refresh = request.data.get('force_refresh', 'false').lower() == 'true'
+
+        # Parse request early
+        s = ResumeAnalysisSerializer(data=request.data)
+        s.is_valid(raise_exception=True)
+        jd = s.validated_data.get("job_description", "")
+        cv = s.validated_data["cv_file"]
+
+        # Note: We skip early cache check here to avoid reading file twice
+        # The analyze_cv_vs_jd function will handle caching internally
+
+        # Enforce rate limit before processing
         allowed, info = enforce_rate_limit(user_id=user_id, plan=plan)
         if not allowed:
             return Response({
@@ -57,18 +70,19 @@ class ResumeAtsAnalyzeView(APIView):
                 "retry_after": info.get("retry_after"),
                 "plan": plan,
                 "user": user_id,
+                "tip": "Results are cached for 7 days. Same CV+JD will be instant on subsequent calls."
             }, status=status.HTTP_429_TOO_MANY_REQUESTS)
 
-        s = ResumeAnalysisSerializer(data=request.data)
-        s.is_valid(raise_exception=True)
-        jd = s.validated_data.get("job_description", "")
-        cv = s.validated_data["cv_file"]
+        # Process with caching handled internally
+        result = ai_checker_resume_service.analyze_cv_vs_jd(cv, jd, force_refresh=force_refresh)
 
-        result = ai_checker_resume_service.analyze_cv_vs_jd(cv, jd)
         # Attach rate-limit meta for transparency
+        cached = result.get("cache", {}).get("hit", False)
         result.setdefault("rate_limit", {}).update({
             "plan": plan,
             "user": user_id,
+            "cached": cached,
+            "quota_used": not cached,
             **({k: v for k, v in info.items() if k in ("remaining_today", "interval_lock")}),
         })
         return Response(result)

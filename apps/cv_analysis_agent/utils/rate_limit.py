@@ -48,10 +48,11 @@ def _plan_quota(plan: str) -> Tuple[int, int]:
             int(os.getenv("AI_CV_ENT_DAILY", "1000")),
             int(os.getenv("AI_CV_ENT_INTERVAL", "1")),
         )
-    # default: free
+    # default: free - Giảm từ 30s → 10s để UX tốt hơn
+    # Cache sẽ xử lý việc tránh gọi API nhiều lần
     return (
-        int(os.getenv("AI_CV_FREE_DAILY", "5")),
-        int(os.getenv("AI_CV_FREE_INTERVAL", "30")),
+        int(os.getenv("AI_CV_FREE_DAILY", "10")),  # Tăng từ 5 → 10 lần/ngày
+        int(os.getenv("AI_CV_FREE_INTERVAL", "10")),  # Giảm từ 30s → 10s
     )
 
 
@@ -111,4 +112,3 @@ def enforce_rate_limit(user_id: str, plan: str = "free") -> Tuple[bool, dict]:
         "remaining_today": max(daily_limit - int(current), 0),
         "interval_lock": min_interval,
     }
-

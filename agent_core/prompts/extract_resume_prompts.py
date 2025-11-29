@@ -6,6 +6,7 @@ Required JSON structure:
 {
   "name": "full name",
   "email": "email address",
+  "aboutMe": "brief summary about me",
   "phone": "phone number",
   "title": "Intern Back-end Developer (or similar, if found)",
   "education": [{"degree": "", "institution": ""}],

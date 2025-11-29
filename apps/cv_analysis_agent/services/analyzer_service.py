@@ -57,7 +57,7 @@ def analyze_resume_text(text: str) -> dict:
         raise ValueError(f"Resume text too short ({len(text)} chars). May not contain valid resume content.")
 
     # Use cached model for better performance
-    model = get_cached_model(temperature=0.1)
+    model = get_cached_model(temperature=0.3)
 
     # Streamlined prompt - system instruction + user content
     full_prompt = f"""{extract_resume_prompts.SYSTEM_PROMPT}

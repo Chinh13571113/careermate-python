@@ -172,3 +172,7 @@ langchain-openai==0.1.25
 PyMuPDF==1.26.6
 docx2txt==0.9
 pytesseract==0.3.13
+
+# Production server
+gunicorn==21.2.0
+django-cors-headers==4.3.1

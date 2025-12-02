@@ -6,30 +6,70 @@ import pandas as pd
 from collections import defaultdict
 from asgiref.sync import sync_to_async
 from django.conf import settings
-from google.cloud import storage
+
+# Optional import for GCS
+try:
+    from google.cloud import storage
+    _HAS_GCS = True
+except ImportError:
+    storage = None
+    _HAS_GCS = False
+
+def _ensure_id_index(df: pd.DataFrame) -> pd.DataFrame:
+    """Normalize id column to int and set as index for fast lookups."""
+    if df is None or df.empty:
+        return pd.DataFrame()
+    if 'id' not in df.columns:
+        print("⚠️ CSV does not contain 'id' column")
+        return df
+    try:
+        df['id'] = pd.to_numeric(df['id'], errors='coerce').astype('Int64')
+        df = df.dropna(subset=['id'])
+        df['id'] = df['id'].astype(int)
+        df = df.set_index('id', drop=False)
+    except Exception as e:
+        print(f"⚠️ Could not normalize 'id' column: {e}")
+    return df
 
 # Load job postings CSV for skill data
 def _load_job_postings_csv():
     """Load job_postings.csv from GCS if available, otherwise from local path"""
+    # Try GCS first (only if credentials are available)
+    if _HAS_GCS and os.getenv('GOOGLE_CLOUD_CREDENTIALS_JSON'):
+        try:
+            bucket_name = "roadmap-dataset-bucket"
+            blob_path = "python/job_postings.csv"
+
+            client = storage.Client()
+            bucket = client.bucket(bucket_name)
+            blob = bucket.blob(blob_path)
+
+            # Download to temporary location
+            temp_path = "/tmp/job_postings.csv"
+            blob.download_to_filename(temp_path)
+            print(f"✅ Loaded job_postings.csv from GCS: {bucket_name}/{blob_path}")
+            df = pd.read_csv(temp_path, encoding='latin-1')
+            return _ensure_id_index(df)
+        except Exception as e:
+            print(f"⚠️ Could not load from GCS: {e}")
+    elif _HAS_GCS and not os.getenv('GOOGLE_APPLICATION_CREDENTIALS'):
+        print("⚠️ GOOGLE_APPLICATION_CREDENTIALS not set, skipping GCS")
+
+    # Fallback to local path
     try:
-        # Try to load from Google Cloud Storage
-        bucket_name = "roadmap-dataset-bucket"
-        blob_path = "python/job_postings.csv"
-
-        client = storage.Client()
-        bucket = client.bucket(bucket_name)
-        blob = bucket.blob(blob_path)
-
-        # Download to temporary location
-        temp_path = "/tmp/job_postings.csv"
-        blob.download_to_filename(temp_path)
-        print(f"✅ Loaded job_postings.csv from GCS: {bucket_name}/{blob_path}")
-        return pd.read_csv(temp_path, encoding='latin-1')
-    except Exception as e:
-        # Fallback to local path
-        print(f"⚠️ Could not load from GCS ({e}), using local file")
         csv_path = os.path.join(settings.BASE_DIR, 'agent_core', 'data', 'job_postings.csv')
-        return pd.read_csv(csv_path, encoding='latin-1')
+        if os.path.exists(csv_path):
+            print(f"✅ Loaded job_postings.csv from local: {csv_path}")
+            df = pd.read_csv(csv_path, encoding='latin-1')
+            return _ensure_id_index(df)
+        else:
+            print(f"⚠️ Local file not found: {csv_path}")
+    except Exception as e:
+        print(f"⚠️ Could not load from local: {e}")
+
+    # Return empty DataFrame if both fail
+    print("❌ job_postings.csv not available - skills data will be 'N/A'")
+    return pd.DataFrame()
 
 data_jp = _load_job_postings_csv()
 
@@ -212,14 +252,19 @@ def _format_cf_results(sorted_jobs):
         job_info = job_details_map[job_id]
         normalized_score = raw_score / max_raw_score if max_raw_score > 0 else 0
 
-        # Get skills from CSV
+        # Get skills from CSV (safe lookup with index)
         skills = "N/A"
-        try:
-            job_row = data_jp[data_jp['id'] == job_id]
-            if not job_row.empty:
-                skills = job_row.iloc[0].get('skills', 'N/A')
-        except Exception:
-            pass
+        if not data_jp.empty:
+            try:
+                if job_id in data_jp.index:
+                    job_row = data_jp.loc[job_id]
+                    # Handle both Series and DataFrame results
+                    if isinstance(job_row, pd.DataFrame):
+                        skills = job_row.iloc[0].get('skills', 'N/A')
+                    else:
+                        skills = job_row.get('skills', 'N/A')
+            except Exception:
+                pass
 
         detailed_results.append({
             "job_id": job_id,

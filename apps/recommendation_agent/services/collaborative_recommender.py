@@ -6,10 +6,32 @@ import pandas as pd
 from collections import defaultdict
 from asgiref.sync import sync_to_async
 from django.conf import settings
+from google.cloud import storage
 
 # Load job postings CSV for skill data
-csv_path = os.path.join(settings.BASE_DIR, 'agent_core', 'data', 'job_postings.csv')
-data_jp = pd.read_csv(csv_path, encoding='latin-1')
+def _load_job_postings_csv():
+    """Load job_postings.csv from GCS if available, otherwise from local path"""
+    try:
+        # Try to load from Google Cloud Storage
+        bucket_name = "roadmap-dataset-bucket"
+        blob_path = "python/job_postings.csv"
+
+        client = storage.Client()
+        bucket = client.bucket(bucket_name)
+        blob = bucket.blob(blob_path)
+
+        # Download to temporary location
+        temp_path = "/tmp/job_postings.csv"
+        blob.download_to_filename(temp_path)
+        print(f"✅ Loaded job_postings.csv from GCS: {bucket_name}/{blob_path}")
+        return pd.read_csv(temp_path, encoding='latin-1')
+    except Exception as e:
+        # Fallback to local path
+        print(f"⚠️ Could not load from GCS ({e}), using local file")
+        csv_path = os.path.join(settings.BASE_DIR, 'agent_core', 'data', 'job_postings.csv')
+        return pd.read_csv(csv_path, encoding='latin-1')
+
+data_jp = _load_job_postings_csv()
 
 # Feedback type weights
 FEEDBACK_WEIGHTS = {

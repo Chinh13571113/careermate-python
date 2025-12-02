@@ -1,22 +1,12 @@
-#bản slim → nhẹ, nhanh build.
 FROM python:3.12-slim
 
-#log Python sẽ flush ngay, không bị cache.
-#PYTHONDONTWRITEBYTECODE=1 → không tạo file .pyc (đỡ rác).
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
     PORT=8080
 
-#build-essential, gfortran → build packages nặng (numpy, scipy,…).
-#libopenblas, lapack → tăng tốc tính toán số học.
-#libpq-dev → để kết nối PostgreSQL.
-#jpeg, zlib, tiff → để Pillow xử lý ảnh.
-#ffi, ssl → build cryptography.
-#pkg-config, curl, wget, git → common tools.
-#rustc, cargo → chỉ cần khi lib Python có rust extension.
-#tesseract, poppler-utils → OCR/PDF nếu cần.
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
+    g++ \
     gfortran \
     libopenblas-dev liblapack-dev \
     libpq-dev \
@@ -29,19 +19,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 WORKDIR /app
 
-# Copy pyproject + lockfile
 COPY pyproject.toml uv.lock ./
 
-# Install dependencies
 RUN pip install uv && uv sync --frozen
 
-# Activate virtual environment created by uv
 ENV PATH="/app/.venv/bin:$PATH"
 
-# Copy rest of the app
 COPY . .
 
-# Download spaCy model
 RUN python -m spacy download en_core_web_sm
 
 RUN mkdir -p /app/staticfiles

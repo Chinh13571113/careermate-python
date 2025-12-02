@@ -27,7 +27,6 @@ INSTALLED_APPS = [
     'drf_spectacular',
     'corsheaders',  # Add CORS headers support
     # Add your app
-    'apps.roadmap_agent',
     'apps.recommendation_agent',
     'apps.cv_creation_agent',
     'apps.cv_analysis_agent',

@@ -9,3 +9,4 @@ __pycache__/
 *.py[cod]
 *$py.class
 *.pyc
+!agent_core/data/job_postings.csv

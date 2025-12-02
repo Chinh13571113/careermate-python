@@ -12,7 +12,12 @@ from rest_framework.permissions import AllowAny
 from .swagger_schemas import (
     RecommendRolesRequestSerializer,
     ExtractSkillsRequestSerializer,
-    SkillInsightsRequestSerializer
+    SkillInsightsRequestSerializer,
+    RecommendRolesResponseSerializer,
+    ExtractSkillsResponseSerializer,
+    SkillInsightsResponseSerializer,
+    AvailableRolesResponseSerializer,
+    HealthCheckResponseSerializer
 )
 
 # Set up logging
@@ -33,28 +38,7 @@ except Exception as e:
 @swagger_auto_schema(
     request_body=RecommendRolesRequestSerializer,
     responses={
-        200: openapi.Response(
-            description="Recommendations returned successfully",
-            examples={
-                "application/json": {
-                    "success": True,
-                    "recommendations": [
-                        {
-                            "role": "Backend Developer",
-                            "confidence": 95.5,
-                            "match_score": 0.88,
-                            "matched_skills": ["Python", "Django", "PostgreSQL"],
-                            "missing_skills": ["Java"],
-                            "insights": "Strong backend focus with database expertise"
-                        }
-                    ],
-                    "input_summary": {
-                        "total_skills": 7,
-                        "experience_years": 5
-                    }
-                }
-            }
-        ),
+        200: RecommendRolesResponseSerializer,
         400: "No skills or text provided",
         500: "Server error"
     }
@@ -145,7 +129,11 @@ def recommend_roles(request):
 @permission_classes([AllowAny])
 @swagger_auto_schema(
     request_body=SkillInsightsRequestSerializer,
-    responses={200: "Skill insights returned successfully"}
+    responses={
+        200: SkillInsightsResponseSerializer,
+        400: "Skills are required",
+        500: "Server error"
+    }
 )
 def get_skill_insights(request):
     if not recommender:
@@ -166,23 +154,8 @@ def get_skill_insights(request):
 @swagger_auto_schema(
     operation_description="List all 12 available career roles with their requirements",
     responses={
-        200: openapi.Response(
-            description="List of all available roles",
-            examples={
-                "application/json": {
-                    "success": True,
-                    "total_roles": 12,
-                    "roles": [
-                        {
-                            "role": "Backend Developer",
-                            "required_languages": ["Python", "Java", "C#"],
-                            "common_technologies": ["Django", "Flask", "Spring"],
-                            "keywords": ["backend", "server", "api"]
-                        }
-                    ]
-                }
-            }
-        )
+        200: AvailableRolesResponseSerializer,
+        500: "Server error"
     }
 )
 def get_available_roles(request):
@@ -202,15 +175,7 @@ def get_available_roles(request):
 @swagger_auto_schema(
     operation_description="Health check endpoint to verify API status",
     responses={
-        200: openapi.Response(
-            description="API is healthy",
-            examples={
-                "application/json": {
-                    "status": "healthy",
-                    "recommender_initialized": True
-                }
-            }
-        )
+        200: HealthCheckResponseSerializer
     }
 )
 def health_check(request):
@@ -226,19 +191,7 @@ def health_check(request):
 @swagger_auto_schema(
     request_body=ExtractSkillsRequestSerializer,
     responses={
-        200: openapi.Response(
-            description="Skills extracted successfully",
-            examples={
-                "application/json": {
-                    "success": True,
-                    "extracted_data": {
-                        "skills": ["Python", "Django", "React", "PostgreSQL", "Docker", "REST API", "AWS"],
-                        "experience_years": 5,
-                        "raw_text": "I've been working as a software developer..."
-                    }
-                }
-            }
-        ),
+        200: ExtractSkillsResponseSerializer,
         400: "No text provided",
         500: "Server error"
     }

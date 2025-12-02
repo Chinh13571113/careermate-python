@@ -35,7 +35,7 @@ def _ensure_id_index(df: pd.DataFrame) -> pd.DataFrame:
 def _load_job_postings_csv():
     """Load job_postings.csv from GCS if available, otherwise from local path"""
     # Try GCS first (only if credentials are available)
-    if _HAS_GCS and os.getenv('GOOGLE_CLOUD_CREDENTIALS_JSON'):
+    if os.getenv('GOOGLE_CLOUD_CREDENTIALS_JSON'):
         try:
             bucket_name = "roadmap-dataset-bucket"
             blob_path = "python/job_postings.csv"
@@ -52,7 +52,7 @@ def _load_job_postings_csv():
             return _ensure_id_index(df)
         except Exception as e:
             print(f"⚠️ Could not load from GCS: {e}")
-    elif _HAS_GCS and not os.getenv('GOOGLE_APPLICATION_CREDENTIALS'):
+    elif not os.getenv('GOOGLE_APPLICATION_CREDENTIALS'):
         print("⚠️ GOOGLE_APPLICATION_CREDENTIALS not set, skipping GCS")
 
     # Fallback to local path

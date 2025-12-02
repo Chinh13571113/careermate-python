@@ -1,11 +1,15 @@
 import asyncio
+from datetime import date
 
 from agent_core.weaviate_config import WeaviateClientManager
 
 manager = WeaviateClientManager()
 client = manager.get_client()
+
 def _query_weaviate_sync(vector, limit):
     """Synchronous function to query Weaviate using v4 API with default vector"""
+    from apps.recommendation_agent.models import JobPostings
+
     # Get the collection
     job_collection = client.collections.get("JobPosting")
 
@@ -17,8 +21,26 @@ def _query_weaviate_sync(vector, limit):
         include_vector=True
     )
 
+    # Get valid job IDs (not expired) from database
+    today = date.today()
+    valid_job_ids = set(
+        JobPostings.objects.filter(
+            status="ACTIVE",
+            expiration_date__gte=today
+        ).values_list('id', flat=True)
+    )
+
     items = []
     for obj in response.objects:
+        job_id = obj.properties.get("jobId")
+
+        # Skip expired jobs
+        if job_id not in valid_job_ids:
+            continue
+
+        if len(items) >= limit:
+            break
+
         skills_field = obj.properties.get("skills", [])
         # nếu skills là list, nối thành chuỗi
         if isinstance(skills_field, list):
@@ -27,7 +49,7 @@ def _query_weaviate_sync(vector, limit):
             skills_text = str(skills_field)
 
         items.append({
-            "job_id": obj.properties.get("jobId"),
+            "job_id": job_id,
             "title": obj.properties.get("title"),
             "skills": skills_text,
             "address": obj.properties.get("address"),
@@ -40,4 +62,3 @@ async def query_weaviate_async(vector: list, limit: int = 10):
     """Async wrapper to query Weaviate"""
     loop = asyncio.get_running_loop()
     return await loop.run_in_executor(None, _query_weaviate_sync, vector, limit)
-

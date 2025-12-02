@@ -163,9 +163,17 @@ def _calculate_job_scores(candidate_jobs, job_users, user_similarities):
 def _format_cf_results(sorted_jobs):
     """Format CF results with job details and normalized scores"""
     from apps.recommendation_agent.models import JobPostings
+    from datetime import date
 
     predicted_job_ids = [job_id for job_id, _ in sorted_jobs]
-    jobs = JobPostings.objects.filter(id__in=predicted_job_ids).values(
+
+    # Only get active, non-expired jobs
+    today = date.today()
+    jobs = JobPostings.objects.filter(
+        id__in=predicted_job_ids,
+        status="ACTIVE",
+        expiration_date__gte=today
+    ).values(
         'id', 'title', 'description', 'address'
     )
     job_details_map = {job['id']: job for job in jobs}
@@ -175,7 +183,11 @@ def _format_cf_results(sorted_jobs):
 
     detailed_results = []
     for job_id, raw_score in sorted_jobs:
-        job_info = job_details_map.get(job_id, {})
+        # Skip if job not found (expired or deleted)
+        if job_id not in job_details_map:
+            continue
+
+        job_info = job_details_map[job_id]
         normalized_score = raw_score / max_raw_score if max_raw_score > 0 else 0
 
         # Get skills from CSV

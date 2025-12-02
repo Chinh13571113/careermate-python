@@ -14,11 +14,17 @@ class WeaviateClientManager:
     def __init__(self):
         self.url = os.getenv("WEAVIATE_URL")
         self.api_key = os.getenv("WEAVIATE_API_KEY")
+        # Don't raise error immediately - allow app to start even without Weaviate
         if not self.url or not self.api_key:
-            raise ValueError("Missing WEAVIATE_URL or WEAVIATE_API_KEY in environment variables.")
+            print("⚠️ Warning: WEAVIATE_URL or WEAVIATE_API_KEY not set. Weaviate features will be disabled.")
+            self.url = None
+            self.api_key = None
 
     def connect(self):
         """Khởi tạo client nếu chưa tồn tại."""
+        if not self.url or not self.api_key:
+            raise ValueError("Cannot connect to Weaviate: Missing WEAVIATE_URL or WEAVIATE_API_KEY in environment variables.")
+
         if self._client is None:
             print("🔗 Creating new Weaviate client connection...")
             self._client = weaviate.connect_to_weaviate_cloud(

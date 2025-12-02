@@ -3,12 +3,24 @@ from datetime import date
 
 from agent_core.weaviate_config import WeaviateClientManager
 
-manager = WeaviateClientManager()
-client = manager.get_client()
+# Lazy initialization - don't connect on import
+_manager = None
+_client = None
+
+def get_weaviate_client():
+    """Get Weaviate client with lazy initialization"""
+    global _manager, _client
+    if _client is None:
+        _manager = WeaviateClientManager()
+        _client = _manager.get_client()
+    return _client
 
 def _query_weaviate_sync(vector, limit):
     """Synchronous function to query Weaviate using v4 API with default vector"""
     from apps.recommendation_agent.models import JobPostings
+
+    # Get client lazily
+    client = get_weaviate_client()
 
     # Get the collection
     job_collection = client.collections.get("JobPosting")

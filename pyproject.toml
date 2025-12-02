@@ -177,6 +177,7 @@ dependencies = [
     "scikit-surprise>=1.1.4",
     "django-cors-headers>=4.9.0",
     "language-tool-python>=2.9.5",
+    "gunicorn>=21.2.0",
 ]
 
 [tool.setuptools.packages.find]

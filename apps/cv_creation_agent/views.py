@@ -60,10 +60,29 @@ def recommend_roles(request):
     if not recommender:
         logger.error("❌ Recommender not initialized")
         return JsonResponse({'success': False, 'error': 'Recommender not initialized'}, status=500)
+
     try:
-        data = json.loads(request.body)
-        logger.info(f"✅ Request body parsed: {data}")
-        
+        # Check if request body is empty
+        if not request.body:
+            logger.error("❌ Empty request body")
+            return JsonResponse({
+                'success': False,
+                'error': 'Request body is empty. Please provide either "skills" array or "text" field.'
+            }, status=400)
+
+        # Try to parse JSON
+        try:
+            data = json.loads(request.body)
+            logger.info(f"✅ Request body parsed: {data}")
+        except json.JSONDecodeError as json_err:
+            logger.error(f"❌ Invalid JSON: {str(json_err)}")
+            logger.error(f"❌ Request body (first 200 chars): {request.body[:200]}")
+            return JsonResponse({
+                'success': False,
+                'error': 'Invalid JSON format. Please send valid JSON with either "skills" array or "text" field.',
+                'details': str(json_err)
+            }, status=400)
+
         # Check if free-form text input
         if 'text' in data:
             if not skill_extractor:

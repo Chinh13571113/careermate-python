@@ -2,10 +2,11 @@ import os
 import json
 import hashlib
 import time
+import logging
 from agent_core.llm import get_openai_model
 from . import clean_json_output, extract_text
 
-
+logger = logging.getLogger(__name__)
 
 # 🧾 Fixed explanations for each section (like Cake.me)
 FIELD_EXPLANATIONS = {
@@ -196,16 +197,27 @@ Analyze and return complete JSON:"""
     if not force_refresh:
         cached = _cache_get(key)
         if cached:
+            logger.info(f"🗃️ Cache HIT: {key} (age={cached.get('cache',{}).get('age_seconds','?')}s)")
             print(f"🗃️ Cache HIT: {key} (age={cached.get('cache',{}).get('age_seconds','?')}s)")
             return cached
     else:
+        logger.info("🗃️ Cache BYPASSED (force_refresh=True)")
         print("🗃️ Cache BYPASSED (force_refresh=True)")
 
     # 4️⃣ Run OpenAI API
-    model = get_openai_model(temperature=model_config["temperature"], top_p=model_config["top_p"])
+    logger.info("🚀 Calling OpenAI API...")
+    logger.info(f"📊 Prompt length: {len(prompt)} chars")
+
+    try:
+        model = get_openai_model(temperature=model_config["temperature"], top_p=model_config["top_p"])
+        logger.info("✅ OpenAI model obtained successfully")
+    except Exception as e:
+        logger.error(f"❌ Failed to get OpenAI model: {str(e)}", exc_info=True)
+        raise
 
     try:
         # Gọi OpenAI invoke() thay vì generate_content()
+        logger.info("📡 Invoking OpenAI API...")
         response = model.invoke(prompt)
         raw_text = response.content if hasattr(response, 'content') else str(response)
         raw_text = raw_text.strip()
@@ -221,24 +233,38 @@ Analyze and return complete JSON:"""
         print(f"📊 Total tokens (estimated): {total_tokens}")
 
     except Exception as e:
-        print(f"❌ OpenAI Error: {str(e)}")
+        error_type = type(e).__name__
+        error_msg = str(e)
+        logger.error(f"❌ OpenAI Error ({error_type}): {error_msg}", exc_info=True)
+        print(f"❌ OpenAI Error ({error_type}): {error_msg}")
+
+        # Log thêm thông tin môi trường
+        logger.error(f"🔍 OPENAI_API_KEY present: {bool(os.getenv('OPENAI_API_KEY'))}")
+        logger.error(f"🔍 OPENAI_BASE_URL: {os.getenv('OPENAI_BASE_URL', 'Not set')}")
+        print(f"🔍 OPENAI_API_KEY present: {bool(os.getenv('OPENAI_API_KEY'))}")
+        print(f"🔍 OPENAI_BASE_URL: {os.getenv('OPENAI_BASE_URL', 'Not set')}")
 
         # Fallback JSON nếu lỗi
         raw_text = json.dumps({
             "summary": {
                 "overall_match": 50,
-                "overview_comment": "Analysis incomplete",
+                "overview_comment": f"Analysis incomplete due to API error: {error_type}",
                 "strengths": ["Resume submitted"],
-                "improvements": ["Please try again"]
+                "improvements": ["API connection failed - please try again"]
             },
-            "content": {"score": 50, "measurable_results": [], "grammar_issues": [], "tips": []},
-            "skills": {"score": 50, "technical": {"matched": [], "missing": []}, "soft": {"missing": []}, "tips": []},
+            "content": {"score": 50, "measurable_results": [], "grammar_issues": [], "tips": ["API error occurred"]},
+            "skills": {"score": 50, "technical": {"matched": [], "missing": []}, "soft": {"missing": []}, "tips": ["API error occurred"]},
             "format": {"score": 50, "checks": {"date_format": "PASS", "length": "PASS", "bullet_points": "PASS"}, "tips": []},
             "sections": {"score": 50, "missing": [], "tips": []},
             "style": {"score": 50, "tone": [], "buzzwords": [], "tips": []},
-            "recommendations": {"items": ["Please retry"]},
+            "recommendations": {"items": [f"API Error: {error_msg[:100]}"]},
             "overall_score": 50,
-            "overall_comment": "Error occurred"
+            "overall_comment": f"Error: {error_type}",
+            "error_details": {
+                "error_type": error_type,
+                "error_message": error_msg,
+                "timestamp": int(time.time())
+            }
         })
 
         input_tokens = len(prompt) // 4

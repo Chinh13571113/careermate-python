@@ -4,8 +4,11 @@ from functools import lru_cache
 from dotenv import load_dotenv
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_openai import ChatOpenAI
+import logging
 
 load_dotenv()
+
+logger = logging.getLogger(__name__)
 
 MODEL_NAME = "gemini-2.5-flash"
 OPENAI_MODEL_NAME = "gpt-4o"
@@ -64,17 +67,28 @@ def get_openai_model(
         Cached OpenAI LLM instance for better performance
     """
     if not openai_api_key:
+        logger.error("❌ OPENAI_API_KEY not found in environment variables")
         raise ValueError("❌ OPENAI_API_KEY not found in environment variables.")
 
-    llm = ChatOpenAI(
-        model=OPENAI_MODEL_NAME,
-        api_key=openai_api_key,
-        base_url=openai_base_url,
-        temperature=temperature,
-        top_p=top_p,
-        max_tokens=2048,
-        timeout=30,
-        seed=1234,
-    )
+    logger.info(f"🔧 Initializing OpenAI model: {OPENAI_MODEL_NAME}")
+    logger.info(f"🌐 Base URL: {openai_base_url}")
+    logger.info(f"🔑 API Key present: {bool(openai_api_key)}")
 
-    return llm
+    try:
+        llm = ChatOpenAI(
+            model=OPENAI_MODEL_NAME,
+            api_key=openai_api_key,
+            base_url=openai_base_url,
+            temperature=temperature,
+            top_p=top_p,
+            max_tokens=2048,
+            timeout=60,  # Increased timeout for Cloud Run
+            seed=1234,
+            max_retries=3,  # Added retry
+            request_timeout=60,  # Added request timeout
+        )
+        logger.info("✅ OpenAI model initialized successfully")
+        return llm
+    except Exception as e:
+        logger.error(f"❌ Failed to initialize OpenAI model: {str(e)}")
+        raise

@@ -7,14 +7,6 @@ from collections import defaultdict
 from asgiref.sync import sync_to_async
 from django.conf import settings
 
-# Optional import for GCS
-try:
-    from google.cloud import storage
-    _HAS_GCS = True
-except ImportError:
-    storage = None
-    _HAS_GCS = False
-
 def _ensure_id_index(df: pd.DataFrame) -> pd.DataFrame:
     """Normalize id column to int and set as index for fast lookups."""
     if df is None or df.empty:
@@ -34,26 +26,6 @@ def _ensure_id_index(df: pd.DataFrame) -> pd.DataFrame:
 # Load job postings CSV for skill data
 def _load_job_postings_csv():
     """Load job_postings.csv from GCS if available, otherwise from local path"""
-    # Try GCS first (only if credentials are available)
-    if os.getenv('GOOGLE_CLOUD_CREDENTIALS_JSON'):
-        try:
-            bucket_name = "roadmap-dataset-bucket"
-            blob_path = "python/job_postings.csv"
-
-            client = storage.Client()
-            bucket = client.bucket(bucket_name)
-            blob = bucket.blob(blob_path)
-
-            # Download to temporary location
-            temp_path = "/tmp/job_postings.csv"
-            blob.download_to_filename(temp_path)
-            print(f"✅ Loaded job_postings.csv from GCS: {bucket_name}/{blob_path}")
-            df = pd.read_csv(temp_path, encoding='latin-1')
-            return _ensure_id_index(df)
-        except Exception as e:
-            print(f"⚠️ Could not load from GCS: {e}")
-    elif not os.getenv('GOOGLE_APPLICATION_CREDENTIALS'):
-        print("⚠️ GOOGLE_APPLICATION_CREDENTIALS not set, skipping GCS")
 
     # Fallback to local path
     try:

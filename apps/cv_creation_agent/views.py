@@ -9,6 +9,8 @@ from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
+from rest_framework import status
 from .swagger_schemas import (
     RecommendRolesRequestSerializer,
     ExtractSkillsRequestSerializer,
@@ -36,6 +38,7 @@ except Exception as e:
 @api_view(['POST'])
 @permission_classes([AllowAny])
 @swagger_auto_schema(
+    operation_description="Recommend career roles based on skills and experience. Accepts BOTH structured input (skills array) OR free-form text.",
     request_body=RecommendRolesRequestSerializer,
     responses={
         200: RecommendRolesResponseSerializer,
@@ -128,6 +131,7 @@ def recommend_roles(request):
 @api_view(['POST'])
 @permission_classes([AllowAny])
 @swagger_auto_schema(
+    operation_description="Get insights about specific skills - which roles use them, how common they are, etc.",
     request_body=SkillInsightsRequestSerializer,
     responses={
         200: SkillInsightsResponseSerializer,
@@ -153,6 +157,7 @@ def get_skill_insights(request):
 @permission_classes([AllowAny])
 @swagger_auto_schema(
     operation_description="List all 12 available career roles with their requirements",
+    manual_parameters=[],
     responses={
         200: AvailableRolesResponseSerializer,
         500: "Server error"
@@ -174,6 +179,7 @@ def get_available_roles(request):
 @permission_classes([AllowAny])
 @swagger_auto_schema(
     operation_description="Health check endpoint to verify API status",
+    manual_parameters=[],
     responses={
         200: HealthCheckResponseSerializer
     }
@@ -189,6 +195,7 @@ def health_check(request):
 @api_view(['POST'])
 @permission_classes([AllowAny])
 @swagger_auto_schema(
+    operation_description="Extract skills and experience from free-form text using NLP",
     request_body=ExtractSkillsRequestSerializer,
     responses={
         200: ExtractSkillsResponseSerializer,

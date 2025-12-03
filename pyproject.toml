@@ -178,7 +178,6 @@ dependencies = [
     "django-cors-headers>=4.9.0",
     "language-tool-python>=2.9.5",
     "gunicorn>=21.2.0",
-    "google-cloud-storage>=2.10.0"
 ]
 
 [tool.setuptools.packages.find]

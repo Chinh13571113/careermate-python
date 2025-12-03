@@ -1,0 +1,66 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Git
+.git/
+.gitignore
+
+# Docker
+Dockerfile
+.dockerignore
+docker-compose*.yml
+compose.yaml
+
+# Data files
+*.csv
+*.pkl
+*.sqlite3
+db.sqlite3
+
+# Logs
+*.log
+
+# Testing
+.pytest_cache/
+.coverage
+
+# Notebooks
+notebook/
+*.ipynb
+
+# Documentation
+*.md
+docs/
+
+# Backup files
+*_backup_*.json
+
+# Local development
+docker_compose/
+test_*.py
+test_*.html
+
+# Batch files
+*.bat
+
+# Cache
+.cache/
+

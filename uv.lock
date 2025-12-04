@@ -302,6 +302,7 @@ dependencies = [
     { name = "six" },
     { name = "smart-open" },
     { name = "sniffio" },
+    { name = "spacy" },
     { name = "spacy-legacy" },
     { name = "spacy-loggers" },
     { name = "sqlalchemy" },
@@ -447,6 +448,7 @@ requires-dist = [
     { name = "six", specifier = "==1.17.0" },
     { name = "smart-open", specifier = "==7.3.1" },
     { name = "sniffio", specifier = "==1.3.1" },
+    { name = "spacy", specifier = ">=3.7.0,<4.0" },
     { name = "spacy-legacy", specifier = "==3.0.12" },
     { name = "spacy-loggers", specifier = "==1.0.5" },
     { name = "sqlalchemy", specifier = "==2.0.44" },
@@ -2293,6 +2295,40 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/a2/87/a6771e1546d97e7e041b6ae58d80074f81b7d5121207425c964ddf5cfdbd/sniffio-1.3.1.tar.gz", hash = "sha256:f4324edc670a0f49750a81b895f35c3adb843cca46f0530f79fc1babb23789dc", size = 20372, upload-time = "2024-02-25T23:20:04.057Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/e9/44/75a9c9421471a6c4805dbf2356f7c181a29c1879239abab1ea2cc8f38b40/sniffio-1.3.1-py3-none-any.whl", hash = "sha256:2f6da418d1f1e0fddd844478f41680e794e6051915791a034ff65e5f100525a2", size = 10235, upload-time = "2024-02-25T23:20:01.196Z" },
+]
+
+[[package]]
+name = "spacy"
+version = "3.7.5"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "catalogue" },
+    { name = "cymem" },
+    { name = "jinja2" },
+    { name = "langcodes" },
+    { name = "murmurhash" },
+    { name = "numpy" },
+    { name = "packaging" },
+    { name = "preshed" },
+    { name = "pydantic" },
+    { name = "requests" },
+    { name = "setuptools" },
+    { name = "spacy-legacy" },
+    { name = "spacy-loggers" },
+    { name = "srsly" },
+    { name = "thinc" },
+    { name = "tqdm" },
+    { name = "typer" },
+    { name = "wasabi" },
+    { name = "weasel" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/21/1e/94e3981516db6fcd6685f058c43c3fa81805c120b04829596367dad1aa4e/spacy-3.7.5.tar.gz", hash = "sha256:a648c6cbf2acc7a55a69ee9e7fa4f22bdf69aa828a587a1bc5cfff08cf3c2dd3", size = 1274806, upload-time = "2024-06-05T07:21:56Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/3d/c8/413225de79e71dd9ca353d597ea4890a43fa60ff98cf9615b1606680ab95/spacy-3.7.5-cp312-cp312-macosx_10_9_x86_64.whl", hash = "sha256:bf54c3c2425428b328b53a65913d47eb4cb27a1429aa4e8ed979ffc97d4663e0", size = 6324302, upload-time = "2024-06-05T07:21:01.604Z" },
+    { url = "https://files.pythonhosted.org/packages/60/f9/726e977c5430c44912ed97d7d965ef35d2563978b38076b254379652a522/spacy-3.7.5-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:4145cea7f9814fa7d86b2028c2dd83e02f13f80d5ac604a400b2f7d7b26a0e8c", size = 6112434, upload-time = "2024-06-05T07:21:05.032Z" },
+    { url = "https://files.pythonhosted.org/packages/53/ff/4b3a9d3063ba98d3ce27a0c2a60e3c25e4650b7c3c7555a47179dac5c282/spacy-3.7.5-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:262f8ebb71f7ed5ffe8e4f384b2594b7a296be50241ce9fbd9277b5da2f46f38", size = 6065925, upload-time = "2024-06-05T07:21:07.679Z" },
+    { url = "https://files.pythonhosted.org/packages/ef/9f/70bed4cb66629ad1fa5f45220d47bbbf6c858e70e5d69f7ca1de95dd2b92/spacy-3.7.5-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:faa1e2b6234ae33c0b1f8dfa5a8dcb66fb891f19231725dfcff4b2666125c250", size = 6455942, upload-time = "2024-06-05T07:21:10.303Z" },
+    { url = "https://files.pythonhosted.org/packages/58/42/b6bb76b08f4a0ccb0e2d0e4f3524acadf1ba929e2b93f90e4652d1c3cbd3/spacy-3.7.5-cp312-cp312-win_amd64.whl", hash = "sha256:07677e270a6d729453cc04b5e2247a96a86320b8845e6428d9f90f217eff0f56", size = 11673681, upload-time = "2024-06-05T07:21:13.386Z" },
 ]
 
 [[package]]

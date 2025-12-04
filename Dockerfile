@@ -34,9 +34,6 @@ COPY pyproject.toml uv.lock ./
 # Install dependencies - layer này được cache nếu pyproject.toml không đổi
 RUN pip install --no-cache-dir uv && uv sync --frozen
 
-# Download spacy model - layer này được cache
-RUN /app/.venv/bin/python -m spacy download en_core_web_sm
-
 # Runtime stage - image nhỏ hơn để deploy
 FROM python:3.12-slim
 

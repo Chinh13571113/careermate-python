@@ -9,12 +9,21 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     g++ \
     gfortran \
-    libopenblas-dev liblapack-dev \
+    libopenblas-dev \
+    liblapack-dev \
     libpq-dev \
-    libjpeg-dev zlib1g-dev libtiff5-dev \
-    libffi-dev libssl-dev pkg-config \
-    curl ca-certificates wget git \
-    rustc cargo \
+    libjpeg-dev \
+    zlib1g-dev \
+    libtiff5-dev \
+    libffi-dev \
+    libssl-dev \
+    pkg-config \
+    curl \
+    ca-certificates \
+    wget \
+    git \
+    rustc \
+    cargo \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
@@ -41,9 +50,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libpq5 \
     libopenblas0 \
     libgomp1 \
-    libjpeg62-turbo \
+    libjpeg62 \
     zlib1g \
-    libtiff5 \
+    libtiff6 \
     tesseract-ocr \
     poppler-utils \
     curl \

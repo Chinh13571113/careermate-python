@@ -1,5 +1,6 @@
 import os
 import datetime as dt
+import logging
 from typing import Optional, Tuple
 
 try:
@@ -10,21 +11,43 @@ except Exception:  # pragma: no cover
 from django.conf import settings
 from django.utils import timezone
 
+logger = logging.getLogger(__name__)
+
 
 def _get_redis_url() -> str:
-    return (
-        os.getenv("REDIS_URL")
-        or os.getenv("CELERY_BROKER_URL")
-        or "redis://localhost:6379/0"
-    )
+    """Get Redis URL, prioritizing REDIS_URL for production."""
+    redis_url = os.getenv("REDIS_URL")
+    if redis_url:
+        return redis_url
+
+    # Fallback to constructing URL from individual vars (local dev)
+    host = os.getenv("REDIS_HOST", "localhost")
+    port = os.getenv("REDIS_PORT", "6379")
+    db = os.getenv("REDIS_DB", "0")
+    password = os.getenv("REDIS_PASSWORD", "")
+
+    if password:
+        return f"redis://:{password}@{host}:{port}/{db}"
+    return f"redis://{host}:{port}/{db}"
 
 
 def get_redis_client():
     if redis is None:
         return None
     try:
-        return redis.Redis.from_url(_get_redis_url(), decode_responses=True)
-    except Exception:
+        url = _get_redis_url()
+        client = redis.Redis.from_url(url, decode_responses=True, socket_connect_timeout=5)
+        # Test connection
+        client.ping()
+        return client
+    except redis.exceptions.AuthenticationError as e:
+        logger.warning(f"Redis authentication failed: {e}")
+        return None
+    except redis.exceptions.ConnectionError as e:
+        logger.warning(f"Redis connection failed: {e}")
+        return None
+    except Exception as e:
+        logger.warning(f"Redis client error: {e}")
         return None
 
 

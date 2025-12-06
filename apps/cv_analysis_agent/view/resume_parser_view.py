@@ -1,3 +1,4 @@
+import base64
 import os
 
 from celery.result import AsyncResult
@@ -59,12 +60,12 @@ class CVAnalyzeView(APIView):
 
         file = serializer.validated_data['file']
 
-        temp_path = os.path.join(TMP_DIR, file.name)
-        with open(temp_path, "wb+") as dest:
-            for chunk in file.chunks():
-                dest.write(chunk)
+        # Read file content and encode to base64
+        file_content = file.read()
+        file_content_b64 = base64.b64encode(file_content).decode('utf-8')
+        filename = file.name
 
-        task = process_resume_task.delay(temp_path)
+        task = process_resume_task.delay(file_content_b64, filename)
         return Response({
             "task_id": task.id,
             "status": "processing"
@@ -294,4 +295,3 @@ class CVAnalyzeSyncView(APIView):
             return Response(result, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-

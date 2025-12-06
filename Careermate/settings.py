@@ -83,16 +83,28 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'Careermate.wsgi.application'
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('POSTGRES_DB', 'MyPostgresDB'),
-        'USER': os.environ.get('POSTGRES_USER', 'root'),
-        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', '123456'),
-        'HOST': os.environ.get('POSTGRES_HOST', 'postgres'),
-        'PORT': os.environ.get('POSTGRES_PORT', '5439'),
-    },
-}
+# Database Configuration
+# Priority: DATABASE_URL (Neon PostgreSQL) > Local PostgreSQL config
+DATABASE_URL = os.environ.get('DATABASE_URL')
+
+if DATABASE_URL:
+    # Parse Neon PostgreSQL URL
+    import dj_database_url
+    DATABASES = {
+        'default': dj_database_url.parse(DATABASE_URL, conn_max_age=600, conn_health_checks=True)
+    }
+else:
+    # Fallback to local PostgreSQL
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.environ.get('POSTGRES_DB', 'MyPostgresDB'),
+            'USER': os.environ.get('POSTGRES_USER', 'root'),
+            'PASSWORD': os.environ.get('POSTGRES_PASSWORD', '123456'),
+            'HOST': os.environ.get('POSTGRES_HOST', 'localhost'),
+            'PORT': os.environ.get('POSTGRES_PORT', '5439'),
+        },
+    }
 
 CELERY_BEAT_SCHEDULE = {
     "retrain-cf-model-every-6h": {
@@ -136,7 +148,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:8080",
     "https://careermate-rho.vercel.app",  # Production frontend
     "https://careermate-web-production-1841.up.railway.app",
-    "https://careermate.com"
+    "https://careermate.com",
     "null",  # Allow file:// protocol for local HTML testing
 ]
 

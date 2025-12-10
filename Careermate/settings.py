@@ -149,6 +149,7 @@ CORS_ALLOWED_ORIGINS = [
     "https://careermate-rho.vercel.app",  # Production frontend
     "https://careermate-web-production-1841.up.railway.app",
     "https://careermate.com",
+    "https://careermate-web-production-48ab.up.railway.app",
     "null",  # Allow file:// protocol for local HTML testing
 ]
 

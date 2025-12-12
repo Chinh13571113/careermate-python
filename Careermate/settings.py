@@ -146,12 +146,14 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:5173",
     "http://127.0.0.1:4200",
     "http://127.0.0.1:8080",
-    "https://careermate-rho.vercel.app",  # Production frontend
-    "https://careermate-web-production-1841.up.railway.app",
     "https://careermate.com",
-    "https://careermate-web-production-48ab.up.railway.app",
     "null",  # Allow file:// protocol for local HTML testing
 ]
+
+# Add FE_URL from environment variable if it exists
+FE_URL = os.environ.get('FE_URL')
+if FE_URL:
+    CORS_ALLOWED_ORIGINS.append(FE_URL)
 
 # Allow credentials (cookies, authorization headers, etc.)
 CORS_ALLOW_CREDENTIALS = True
